@@ -43,6 +43,7 @@ export async function grantXp(userId: string, amount: number) {
 // ✨ Main Handle Function (No changes needed here) ✨
 // =================================================================
 export const handle: Handle = async ({ event, resolve }) => {
+	event.locals.pb = pb;
 	pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
 	if (pb.authStore.isValid) {

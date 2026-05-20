@@ -3,8 +3,14 @@ import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const mangas = await locals.pb.collection('mangas').getFullList({ sort: '-created' });
-	return { mangas };
+	try {
+		const mangas = await locals.pb.collection('mangas').getFullList({ sort: '-created' });
+		return { mangas };
+	} catch (error) {
+		console.error('Failed to load mangas with sort, falling back to unsorted list:', error);
+		const mangas = await locals.pb.collection('mangas').getFullList();
+		return { mangas };
+	}
 };
 
 export const actions: Actions = {
