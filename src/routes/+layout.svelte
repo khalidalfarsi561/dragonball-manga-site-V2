@@ -47,8 +47,8 @@
 	{/each}
 </div>
 
-<div class="min-h-screen bg-gray-900 font-[Tajawal] text-white">
-	<nav id="main-nav" class="sticky top-0 z-[999] bg-transparent p-4 text-white">
+<div class="flex h-screen flex-col overflow-hidden bg-gray-900 font-[Tajawal] text-white">
+	<nav id="main-nav" class="z-50 flex-shrink-0 bg-transparent p-4 text-white">
 		<div class="container mx-auto flex flex-wrap items-center justify-between gap-4">
 			<button
 				on:click={() => (isMenuOpen = !isMenuOpen)}
@@ -74,7 +74,7 @@
 				<img
 					src="https://i.ibb.co/v4pqP1XB/Dragon-Ball-Logo.webp"
 					alt="Dragon Ball Logo"
-					class="h-8 md:h-12 w-auto"
+					class="h-8 w-auto md:h-12"
 				/>
 			</a>
 
@@ -149,7 +149,7 @@
 			{/if}
 		</div>
 	</nav>
-	<main class="pt-20">
+	<main class="flex-1 overflow-y-auto">
 		<slot />
 	</main>
 </div>

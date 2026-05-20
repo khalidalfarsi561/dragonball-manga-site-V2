@@ -10,8 +10,8 @@
 	<title>موقع دراغون بول الأسطوري | اقرأ المانجا أونلاين</title>
 </svelte:head>
 
-<div class="min-h-screen bg-gray-900 font-[Tajawal] text-white">
-	<main class="container mx-auto px-4 py-16">
+<div class="min-h-full bg-gray-900 font-[Tajawal] text-white">
+	<main class="container mx-auto px-4 pt-8 pb-16">
 		<h2 class="mb-6 text-center text-3xl font-bold text-orange-500 md:text-4xl">اختر السلسلة</h2>
 
 		<form
