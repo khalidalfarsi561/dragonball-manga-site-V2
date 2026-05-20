@@ -20,12 +20,13 @@
 	<div class="flex justify-end">
 		<form
 			method="POST"
+			action="?/add"
 			class="w-full max-w-xl space-y-6 rounded-lg bg-gray-800 p-8 text-right shadow-lg"
 		>
 			<div>
 				<label for="manga" class="mb-2 block text-gray-300">اختر المانجا</label>
 				<select
-					name="mangaId"
+					name="manga"
 					id="manga"
 					class="w-full rounded border border-gray-600 bg-gray-700 p-2 text-right text-white"
 					required
@@ -39,18 +40,30 @@
 				<label for="chapterNumber" class="mb-2 block text-gray-300">رقم الفصل</label>
 				<input
 					type="number"
-					name="chapterNumber"
+					name="chapter_number"
 					id="chapterNumber"
 					class="w-full rounded border border-gray-600 bg-gray-700 p-2 text-white"
 					required
 				/>
 			</div>
 			<div>
-				<label for="totalPages" class="mb-2 block text-gray-300">إجمالي عدد الصفحات</label>
+				<label for="title" class="mb-2 block text-gray-300">عنوان الفصل</label>
 				<input
-					type="number"
-					name="totalPages"
-					id="totalPages"
+					type="text"
+					name="title"
+					id="title"
+					class="w-full rounded border border-gray-600 bg-gray-700 p-2 text-white"
+					required
+				/>
+			</div>
+
+			<div>
+				<label for="url" class="mb-2 block text-gray-300">رابط الفصل</label>
+				<input
+					dir="ltr"
+					type="url"
+					name="url"
+					id="url"
 					class="w-full rounded border border-gray-600 bg-gray-700 p-2 text-white"
 					required
 				/>

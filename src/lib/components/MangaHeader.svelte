@@ -23,7 +23,7 @@
 <svelte:body on:click={() => (isActionsMenuOpen = false)} />
 
 <header
-	class="relative flex min-h-[60vh] items-end bg-cover bg-fixed bg-center p-4 md:p-8"
+	class="relative flex min-h-[60vh] items-end bg-cover bg-center p-4 md:bg-fixed md:p-8"
 	style="background-image: url({manga.cover_image_url});"
 >
 	<div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>

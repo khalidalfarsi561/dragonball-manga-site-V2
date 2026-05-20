@@ -46,13 +46,16 @@ function createQuizStore() {
 		},
 		answerQuestion: (questionId: string, selectedOption: number) => {
 			update((state) => {
-				state.userAnswers.push({ questionId, selectedOption });
-				if (state.currentQuestionIndex < state.questions.length - 1) {
-					state.currentQuestionIndex++;
-				} else {
-					state.isCompleted = true;
-				}
-				return state;
+				const isLastQuestion = state.currentQuestionIndex >= state.questions.length - 1;
+
+				return {
+					...state,
+					userAnswers: [...state.userAnswers, { questionId, selectedOption }],
+					currentQuestionIndex: isLastQuestion
+						? state.currentQuestionIndex
+						: state.currentQuestionIndex + 1,
+					isCompleted: isLastQuestion
+				};
 			});
 		},
 		reset: () =>

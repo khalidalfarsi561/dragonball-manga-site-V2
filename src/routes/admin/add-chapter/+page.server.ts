@@ -39,7 +39,20 @@ export const actions: Actions = {
 		const title = data.get('title') as string;
 		const chapter_number = data.get('chapter_number') as string;
 
-		const isAllowed = ALLOWED_DOMAINS.some((domain) => url.startsWith(domain));
+		let parsedUrl: URL;
+
+		try {
+			parsedUrl = new URL(url);
+		} catch {
+			return fail(400, {
+				error: 'الرابط غير صحيح.'
+			});
+		}
+
+		const isAllowed = ALLOWED_DOMAINS.some((domain) => {
+			const allowedHost = new URL(domain).hostname;
+			return parsedUrl.hostname === allowedHost;
+		});
 
 		if (!isAllowed) {
 			return fail(400, {
@@ -49,6 +62,11 @@ export const actions: Actions = {
 
 		try {
 			const res = await fetch(url);
+
+			if (!res.ok) {
+				return message(form, 'فشل جلب الرابط. تأكد أن الرابط يعمل.');
+			}
+
 			const html = await res.text();
 			const window = new JSDOM(html).window;
 			const purify = DOMPurify(window);
@@ -57,7 +75,7 @@ export const actions: Actions = {
 			const images = Array.from(dom.querySelectorAll('img')).map((img) => img.src);
 
 			// الآن 'pb' معرف بشكل صحيح
-			const record = await event.locals.pb.collection('chapters').create({
+			await event.locals.pb.collection('chapters').create({
 				manga: mangaId,
 				title: title,
 				chapter_number: chapter_number,
