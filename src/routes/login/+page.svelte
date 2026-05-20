@@ -4,7 +4,7 @@
 	import { enhance } from '$app/forms'; // السر الأول: استيراد الأداة السحرية
 	import { navigating } from '$app/stores'; // لاستشعار حالة الإرسال
 
-	export let form: ActionData;
+	export let form: any;
 
 	// التحقق من وجود 'registered' في الرابط
 	const registrationSuccess = $page.url.searchParams.get('registered') === 'true';

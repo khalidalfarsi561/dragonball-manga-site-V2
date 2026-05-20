@@ -1,7 +1,12 @@
 <script lang="ts">
-	import type { PageData, ActionData } from './$types';
-	export let data: PageData;
-	export let form: ActionData;
+	export let data: {
+		mangas: {
+			id: string;
+			title: string;
+		}[];
+	};
+
+	export let form: any;
 </script>
 
 <svelte:head><title>إضافة فصل جديد</title></svelte:head>
@@ -25,7 +30,7 @@
 					class="w-full rounded border border-gray-600 bg-gray-700 p-2 text-right text-white"
 					required
 				>
-					{#each data.mangas as manga}
+					{#each data.mangas ?? [] as manga}
 						<option value={manga.id}>{manga.title}</option>
 					{/each}
 				</select>
