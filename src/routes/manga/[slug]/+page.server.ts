@@ -34,11 +34,17 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 				: Promise.resolve(false),
 			// 3. Get the user's read history.
 			locals.user
-				? pb.collection('read_history').getFullList<ReadHistoryRecord>({
-						filter: `user = "${locals.user.id}" && manga = "${manga.id}"`,
-						sort: '-updated',
-						expand: 'chapter'
-					})
+				? pb
+						.collection('read_history')
+						.getFullList<ReadHistoryRecord>({
+							filter: `user = "${locals.user.id}" && manga = "${manga.id}"`,
+							sort: '-updated',
+							expand: 'chapter'
+						})
+						.catch((err) => {
+							console.warn('Failed to load read history, continuing without it:', err);
+							return [];
+						})
 				: Promise.resolve([])
 		]);
 
@@ -87,15 +93,16 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			firstUnreadChapter,
 			readCount: readChapterIds.size
 		};
-	} catch (err: any) {
-		// The error was happening before this catch block.
-		// It's still good to have for other potential errors.
-		if (err.status === 404) {
-			throw error(404, 'The requested manga does not exist.');
+		} catch (err: unknown) {
+			// The error was happening before this catch block.
+			// It's still good to have for other potential errors.
+			const pbError = err as { status?: number };
+			if (pbError.status === 404) {
+				throw error(404, 'The requested manga does not exist.');
+			}
+			console.error('Failed to load manga page:', err);
+			throw error(500, 'A server error occurred while loading the manga page.');
 		}
-		console.error('Failed to load manga page:', err);
-		throw error(500, 'A server error occurred while loading the manga page.');
-	}
 };
 
 export const actions: Actions = {
@@ -125,9 +132,10 @@ export const actions: Actions = {
 					// إذا نجح هذا السطر، فهذا يعني أن السجل موجود بالفعل!
 					// هذا لا يفترض أن يحدث إذا كانت الواجهة تعمل بشكل صحيح، لكنه حماية إضافية.
 					return { success: false, message: 'هذه المانجا موجودة بالفعل في المفضلة.' };
-				} catch (err: any) {
+				} catch (err: unknown) {
 					// إذا كان الخطأ 404، فهذا يعني أن السجل غير موجود، وهذا هو ما نريده!
-					if (err.status === 404) {
+					const pbError = err as { status?: number };
+					if (pbError.status === 404) {
 						// الآن يمكننا الإضافة بأمان
 						await pb.collection('favorites').create({
 							user: locals.user.id,
@@ -139,10 +147,11 @@ export const actions: Actions = {
 					throw err;
 				}
 			}
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.error('Toggle Favorite Action Error:', err);
 			// إذا كان الخطأ بسبب قاعدة البيانات (مثلاً القيد الذي وضعناه)، ستظهر رسالة مناسبة
-			if (err.data?.data?.name?.code === 'validation_not_unique') {
+			const pbError = err as { data?: { data?: { name?: { code?: string } } } };
+			if (pbError.data?.data?.name?.code === 'validation_not_unique') {
 				return { success: false, message: 'هذه المانجا موجودة بالفعل في المفضلة.' };
 			}
 			return { success: false, message: 'فشل تحديث المفضلة. حاول مرة أخرى.' };
