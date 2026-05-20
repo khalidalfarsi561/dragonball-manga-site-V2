@@ -49,10 +49,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 		try {
 			await pb.collection('users').authRefresh();
 			event.locals.user = structuredClone(pb.authStore.model);
-		} catch (_) {
+			event.locals.admin = !!pb.authStore.model?.isAdmin;
+		} catch (error) {
+			console.error('Auth refresh failed:', error);
 			pb.authStore.clear();
 			event.locals.user = null;
+			event.locals.admin = false;
 		}
+	} else {
+		event.locals.user = null;
+		event.locals.admin = false;
 	}
 
 	const user = event.locals.user;
@@ -73,8 +79,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 				userBallsRecord = await pb
 					.collection('user_dragonballs')
 					.getFirstListItem(`user.id = "${user.id}"`);
-			} catch (err: any) {
-				if (err.status === 404) {
+			} catch (err: unknown) {
+				if (
+					typeof err === 'object' &&
+					err !== null &&
+					'status' in err &&
+					(err as { status?: number }).status === 404
+				) {
 					userBallsRecord = await pb
 						.collection('user_dragonballs')
 						.create({ user: user.id, collected_balls: [] });
@@ -105,7 +116,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 // ======================= الاضافة تبدأ هنا =======================
 /** @type {import('@sveltejs/kit').HandleServerError} */
-export const handleError: HandleServerError = async ({ error, event }) => {
+export const handleError: HandleServerError = async ({ error }) => {
 	// تسجيل الخطأ الكامل في الخادم (يمكنك استخدام خدمة متخصصة مثل Sentry)
 	console.error('An unexpected error occurred:', error);
 
