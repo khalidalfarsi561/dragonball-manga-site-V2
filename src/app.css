@@ -7,3 +7,23 @@
 body {
 	font-family: 'Tajawal', sans-serif;
 }
+
+/* إخفاء شريط التمرير بالكامل */
+
+html {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+	display: none;
+}
+
+body {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+	display: none;
+}

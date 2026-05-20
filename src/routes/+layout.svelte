@@ -48,7 +48,7 @@
 </div>
 
 <div class="min-h-screen bg-gray-900 font-[Tajawal] text-white">
-	<nav id="main-nav" class="sticky top-0 z-50 bg-gray-800 p-4 text-white shadow-md">
+	<nav id="main-nav" class="sticky top-0 z-[999] bg-transparent p-4 text-white">
 		<div class="container mx-auto flex flex-wrap items-center justify-between gap-4">
 			<button
 				on:click={() => (isMenuOpen = !isMenuOpen)}
@@ -70,8 +70,12 @@
 				>
 			</button>
 
-			<a href="/" class="text-2xl font-bold text-orange-500 hover:text-orange-400">
-				موقع دراغون بول
+			<a href="/" class="flex items-center">
+				<img
+					src="https://i.ibb.co/v4pqP1XB/Dragon-Ball-Logo.webp"
+					alt="Dragon Ball Logo"
+					class="h-8 md:h-12 w-auto"
+				/>
 			</a>
 
 			<div class="hidden items-center gap-x-4 text-base md:flex md:gap-x-6">
@@ -145,7 +149,9 @@
 			{/if}
 		</div>
 	</nav>
-	<slot />
+	<main class="pt-20">
+		<slot />
+	</main>
 </div>
 
 <style>
