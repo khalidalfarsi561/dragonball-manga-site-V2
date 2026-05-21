@@ -55,7 +55,7 @@
 		</form>
 
 		{#if mangas.length > 0}
-			<div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+			<div dir="rtl" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
 				{#each mangas as manga (manga.id)}
 					<MangaCard
 						{manga}
