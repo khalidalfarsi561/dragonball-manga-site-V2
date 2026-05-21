@@ -1,6 +1,5 @@
 // src/routes/profile/history/+page.server.ts
 
-import { pb } from '$lib/pocketbase';
 import { redirect, error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { PaginatedResult, ReadHistoryRecord } from '$lib/types';
@@ -21,7 +20,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	}
 
 	try {
-		const historyResult: PaginatedResult<ReadHistoryRecord> = await pb
+		const historyResult: PaginatedResult<ReadHistoryRecord> = await locals.pb
 			.collection('read_history')
 			.getList(page, perPage, {
 				filter: filter,
@@ -31,8 +30,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 		for (const record of historyResult.items) {
 			if (record.expand?.manga?.cover_image) {
-				// ✨✨ هذا هو السطر الذي تم تحديثه ✨✨
-				record.expand.manga.cover_image_url = pb.files.getURL(
+				record.expand.manga.cover_image_url = locals.pb.files.getURL(
 					record.expand.manga,
 					record.expand.manga.cover_image,
 					{ thumb: '100x150' }
@@ -64,7 +62,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			await pb.collection('read_history').delete(recordId);
+			await locals.pb.collection('read_history').delete(recordId);
 			// رسالة نجاح واضحة
 			return { success: true, message: 'تم حذف السجل بنجاح.' };
 		} catch (err) {
@@ -90,7 +88,7 @@ export const actions: Actions = {
 
 		// حاول حذف كل السجلات المحددة
 		const promises = idsToDelete.map((id) =>
-			pb.collection('read_history').delete(id, { requestKey: null })
+			locals.pb.collection('read_history').delete(id, { requestKey: null })
 		);
 
 		try {
@@ -107,13 +105,13 @@ export const actions: Actions = {
 		if (!locals.user) throw error(401, 'غير مصرح به');
 
 		try {
-			const records = await pb.collection('read_history').getFullList(200, {
+			const records = await locals.pb.collection('read_history').getFullList(200, {
 				filter: `user.id = "${locals.user.id}"`,
 				fields: 'id'
 			});
 
 			const deletePromises = records.map((record) =>
-				pb.collection('read_history').delete(record.id, { requestKey: null })
+				locals.pb.collection('read_history').delete(record.id, { requestKey: null })
 			);
 			await Promise.allSettled(deletePromises);
 

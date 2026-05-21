@@ -6,12 +6,10 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals }) => {
 	if (!locals.user) throw redirect(303, '/login');
 
-	// ✨ بداية الإصلاح: جلب بيانات المستخدم كاملة وإنشاء رابط الأفاتار
-	const user = await pb.collection('users').getOne(locals.user.id);
+	const user = locals.user;
 	if (user.avatar) {
 		user.avatarUrl = pb.files.getURL(user, user.avatar, { thumb: '100x100' });
 	}
-	// ✨ نهاية الإصلاح
 
 	const [favorites, readHistory, userDragonBalls] = await Promise.all([
 		pb.collection('favorites').getFullList({
@@ -19,7 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			expand: 'manga'
 		}),
 		pb.collection('read_history').getFullList({
-			filter: `user.id = "${locals.user.id}"`,
+			filter: `user = "${locals.user.id}"`,
 			fields: 'id'
 		}),
 		pb
@@ -117,7 +115,7 @@ export const actions: Actions = {
 				passwordConfirm: newPasswordConfirm,
 				oldPassword: oldPassword
 			});
-		} catch (err: any) {
+		} catch (err) {
 			console.error(err);
 			return fail(400, { passwordError: 'كلمة المرور القديمة غير صحيحة. حاول مرة أخرى.' });
 		}
