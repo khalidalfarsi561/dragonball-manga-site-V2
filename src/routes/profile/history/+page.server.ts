@@ -13,10 +13,10 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	const perPage = 20;
 	const searchTerm = url.searchParams.get('q') || '';
 
-	let filter = `user.id = "${locals.user.id}"`;
+	let filter = `user = "${locals.user.id}"`;
 
 	if (searchTerm) {
-		filter += ` && manga.title ~ "${searchTerm}"`;
+		filter += ` && manga.title ?~ "${searchTerm}"`;
 	}
 
 	try {
@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			.collection('read_history')
 			.getList(page, perPage, {
 				filter: filter,
-				sort: '-created',
+				sort: '-reading_started_at',
 				expand: 'manga,chapter'
 			});
 
@@ -106,7 +106,7 @@ export const actions: Actions = {
 
 		try {
 			const records = await locals.pb.collection('read_history').getFullList(200, {
-				filter: `user.id = "${locals.user.id}"`,
+				filter: `user = "${locals.user.id}"`,
 				fields: 'id'
 			});
 
