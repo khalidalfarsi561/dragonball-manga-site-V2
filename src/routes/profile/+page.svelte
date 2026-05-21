@@ -139,6 +139,8 @@
 		{/if}
 
 		<div class="mb-10 flex flex-col items-center gap-4 text-center">
+			<h1 class="text-4xl font-bold">ملفي الشخصي</h1>
+
 			<div class="relative">
 				{#if data.user.avatarUrl}
 					<img
@@ -156,7 +158,6 @@
 			</div>
 
 			<div>
-				<h1 class="text-4xl font-bold">ملفي الشخصي</h1>
 				<p class="mt-1 text-gray-400">مرحباً بعودتك، {data.user?.username}</p>
 				{#if data.user.title}
 					<span
