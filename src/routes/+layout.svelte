@@ -70,23 +70,7 @@
 				>
 			</button>
 
-			<a href="/" class="flex items-center">
-				<img
-					src="https://i.ibb.co/v4pqP1XB/Dragon-Ball-Logo.webp"
-					alt="Dragon Ball Logo"
-					class="h-8 w-auto md:h-12"
-				/>
-			</a>
-
 			<div class="hidden items-center gap-x-4 text-base md:flex md:gap-x-6">
-				<a href="/quizzes" class="font-semibold transition-colors hover:text-orange-400"
-					>الاختبارات</a
-				>
-				<a href="/leaderboard" class="font-semibold transition-colors hover:text-orange-400"
-					>لوحة الصدارة</a
-				>
-				<div class="hidden h-6 w-px bg-gray-600 sm:block"></div>
-
 				{#if data.user}
 					<div class="flex items-center gap-x-4">
 						<span class="hidden sm:inline">أهلاً بك، {data.user.name}</span>
@@ -108,7 +92,22 @@
 						>
 					</div>
 				{/if}
+				<div class="hidden h-6 w-px bg-gray-600 sm:block"></div>
+				<a href="/quizzes" class="font-semibold transition-colors hover:text-orange-400"
+					>الاختبارات</a
+				>
+				<a href="/leaderboard" class="font-semibold transition-colors hover:text-orange-400"
+					>لوحة الصدارة</a
+				>
 			</div>
+
+			<a href="/" class="flex items-center">
+				<img
+					src="https://i.ibb.co/v4pqP1XB/Dragon-Ball-Logo.webp"
+					alt="Dragon Ball Logo"
+					class="h-8 w-auto md:h-12"
+				/>
+			</a>
 
 			{#if isMenuOpen}
 				<div
