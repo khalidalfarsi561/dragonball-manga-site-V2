@@ -50,25 +50,25 @@
 <div class="flex h-screen flex-col overflow-hidden bg-gray-900 font-[Tajawal] text-white">
 	<nav id="main-nav" class="z-50 flex-shrink-0 bg-transparent p-4 text-white">
 		<div class="container mx-auto flex flex-wrap items-center justify-between gap-4">
-			<button
-				on:click={() => (isMenuOpen = !isMenuOpen)}
-				class="inline-block rounded p-2 text-gray-300 hover:bg-gray-700 md:hidden"
-				aria-label="Toggle menu"
+			<a
+				href="/profile"
+				class="md:hidden"
+				aria-label="الملف الشخصي"
 			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"
-					></line><line x1="3" y1="18" x2="21" y2="18"></line></svg
-				>
-			</button>
+				{#if data.user?.avatar}
+					<img
+						src={data.user.avatarUrl}
+						alt="Avatar"
+						class="h-10 w-10 rounded-full border-2 border-orange-500 object-cover"
+					/>
+				{:else}
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-700 text-sm font-bold text-white"
+					>
+						{data.user?.username?.charAt(0).toUpperCase()}
+					</div>
+				{/if}
+			</a>
 
 			<div class="hidden items-center gap-x-4 text-base md:flex md:gap-x-6">
 				{#if data.user}

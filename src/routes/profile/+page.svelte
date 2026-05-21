@@ -138,7 +138,7 @@
 			</div>
 		{/if}
 
-		<div class="mb-10 flex flex-col items-center gap-4 text-center">
+		<div class="mb-10 flex flex-col items-center gap-8 text-center">
 			<h1 class="text-4xl font-bold">ملفي الشخصي</h1>
 
 			<div class="relative">
@@ -158,7 +158,6 @@
 			</div>
 
 			<div>
-				<p class="mt-1 text-gray-400">مرحباً بعودتك، {data.user?.username}</p>
 				{#if data.user.title}
 					<span
 						class="mt-2 inline-block rounded-full bg-yellow-500 px-2 py-1 text-xs font-bold text-black"
