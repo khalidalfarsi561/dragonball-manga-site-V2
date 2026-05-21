@@ -1,59 +1,66 @@
-import { pb } from '$lib/pocketbase';
-import type { Handle, HandleServerError } from '@sveltejs/kit'; // تم استيراد HandleServerError
+import { dev } from '$app/environment';
+import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 import { DRAGON_BALL_SECRET } from '$env/static/private';
+import PocketBase from 'pocketbase';
+import type { Handle, HandleServerError } from '@sveltejs/kit';
 
-// =================================================================
-// ✨ Helper Functions (No changes needed here) ✨
-// =================================================================
-
-async function createFindToken(userId: string, ballNumber: number): Promise<string> {
-	const data = new TextEncoder().encode(`${userId}-${ballNumber}-${DRAGON_BALL_SECRET}`);
-	const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+function createRequestPocketBase() {
+	return new PocketBase(PUBLIC_POCKETBASE_URL);
 }
 
-export async function grantXp(userId: string, amount: number) {
+async function createFindToken(userId: string, ballNumber: number): Promise<string> {
+	const data = new TextEncoder().encode(`${userId}${ballNumber}${DRAGON_BALL_SECRET}`);
+	const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+	const hashArray = Array.from(new Uint8Array(hashBuffer));
+	return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+export async function grantXp(
+	userId: string,
+	amount: number,
+	client: PocketBase = createRequestPocketBase()
+) {
 	if (!userId || amount <= 0) return;
 
 	try {
-		const user = await pb.collection('users').getOne(userId);
+		const user = await client.collection('users').getOne(userId);
 		const newXp = (user.xp || 0) + amount;
 		let newLevel = user.power_level || 1;
 		let xpToNext = user.xp_to_next_level || 100;
 
 		if (newXp >= xpToNext) {
-			newLevel++;
+			newLevel += 1;
 			const remainingXp = newXp - xpToNext;
 			xpToNext = newLevel * 100;
-			await pb.collection('users').update(userId, {
+
+			await client.collection('users').update(userId, {
 				xp: remainingXp,
 				power_level: newLevel,
 				xp_to_next_level: xpToNext
 			});
-		} else {
-			await pb.collection('users').update(userId, { xp: newXp });
+			return;
 		}
+
+		await client.collection('users').update(userId, { xp: newXp });
 	} catch (err) {
 		console.error('Error granting XP:', err);
 	}
 }
 
-// =================================================================
-// ✨ Main Handle Function (No changes needed here) ✨
-// =================================================================
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.pb = pb;
-	pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
+	const requestPb = createRequestPocketBase();
+	event.locals.pb = requestPb;
 
-	if (pb.authStore.isValid) {
+	requestPb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
+
+	if (requestPb.authStore.isValid) {
 		try {
-			await pb.collection('users').authRefresh();
-			event.locals.user = structuredClone(pb.authStore.model);
-			event.locals.admin = !!pb.authStore.model?.isAdmin;
+			await requestPb.collection('users').authRefresh();
+			event.locals.user = structuredClone(requestPb.authStore.model);
+			event.locals.admin = !!requestPb.authStore.model?.isAdmin;
 		} catch (error) {
 			console.error('Auth refresh failed:', error);
-			pb.authStore.clear();
+			requestPb.authStore.clear();
 			event.locals.user = null;
 			event.locals.admin = false;
 		}
@@ -66,18 +73,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (user) {
 		const now = new Date();
-		const lastLogin = new Date(user.last_login_xp || 0);
+		const lastLogin = new Date((user as { last_login_xp?: string | null }).last_login_xp || 0);
 		const oneDay = 24 * 60 * 60 * 1000;
 
 		if (now.getTime() - lastLogin.getTime() > oneDay) {
-			await grantXp(user.id, 15);
-			await pb.collection('users').update(user.id, { last_login_xp: now.toISOString() });
+			await grantXp(user.id, 15, requestPb);
+			await requestPb.collection('users').update(user.id, { last_login_xp: now.toISOString() });
 		}
 
 		if (Math.random() < 0.02) {
 			let userBallsRecord;
+
 			try {
-				userBallsRecord = await pb
+				userBallsRecord = await requestPb
 					.collection('user_dragonballs')
 					.getFirstListItem(`user.id = "${user.id}"`);
 			} catch (err: unknown) {
@@ -87,15 +95,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 					'status' in err &&
 					(err as { status?: number }).status === 404
 				) {
-					userBallsRecord = await pb
-						.collection('user_dragonballs')
-						.create({ user: user.id, collected_balls: [] });
+					userBallsRecord = await requestPb.collection('user_dragonballs').create({
+						user: user.id,
+						collected_balls: []
+					});
 				}
 			}
+
 			if (userBallsRecord) {
 				const collected: number[] = userBallsRecord.collected_balls || [];
+
 				if (collected.length < 7) {
-					const availableBalls = [1, 2, 3, 4, 5, 6, 7].filter((b) => !collected.includes(b));
+					const availableBalls = [1, 2, 3, 4, 5, 6, 7].filter((ball) => !collected.includes(ball));
+
 					if (availableBalls.length > 0) {
 						const ballToFind = availableBalls[Math.floor(Math.random() * availableBalls.length)];
 						event.locals.dragonBall = {
@@ -111,20 +123,24 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	const response = await resolve(event);
-	response.headers.set('set-cookie', pb.authStore.exportToCookie({ httpOnly: true, secure: true }));
+	response.headers.set(
+		'set-cookie',
+		requestPb.authStore.exportToCookie({
+			path: '/',
+			httpOnly: true,
+			secure: !dev,
+			sameSite: 'lax'
+		})
+	);
+
 	return response;
 };
 
-// ======================= الاضافة تبدأ هنا =======================
-/** @type {import('@sveltejs/kit').HandleServerError} */
 export const handleError: HandleServerError = async ({ error }) => {
-	// تسجيل الخطأ الكامل في الخادم (يمكنك استخدام خدمة متخصصة مثل Sentry)
 	console.error('An unexpected error occurred:', error);
 
-	// إرسال بيانات مبسطة وغير حساسة إلى المستخدم
 	return {
 		message: 'حدث خطأ غير متوقع في الخادم، الرجاء المحاولة مرة أخرى.',
 		code: 'UNEXPECTED_ERROR'
 	};
 };
-// ======================= الاضافة تنتهي هنا =======================

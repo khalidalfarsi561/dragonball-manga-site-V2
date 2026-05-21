@@ -124,12 +124,8 @@
 
 <div dir="rtl" class="min-h-screen overflow-hidden bg-[#070b12] font-[Tajawal] text-white">
 	<div class="pointer-events-none fixed inset-0 overflow-hidden">
-		<div
-			class="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-orange-500/10 blur-3xl"
-		></div>
-		<div
-			class="absolute top-48 -left-44 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl"
-		></div>
+		<div class="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-orange-500/10 blur-3xl"></div>
+		<div class="absolute top-48 -left-44 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl"></div>
 		<div
 			class="absolute right-1/2 bottom-0 h-72 w-72 translate-x-1/2 rounded-full bg-purple-500/10 blur-3xl"
 		></div>
@@ -153,8 +149,8 @@
 					</h1>
 
 					<p class="mt-3 max-w-xl text-sm leading-7 text-gray-300 sm:text-base">
-						إدارة محتوى دراغون بول، متابعة المستخدمين، مراجعة التعليقات، والتحكم في أدوات الموقع
-						من مكان واحد بتصميم واضح ومريح على الهاتف والكمبيوتر.
+						إدارة محتوى دراغون بول، متابعة المستخدمين، مراجعة التعليقات، والتحكم في أدوات الموقع من
+						مكان واحد بتصميم واضح ومريح على الهاتف والكمبيوتر.
 					</p>
 				</div>
 
@@ -188,7 +184,7 @@
 					href={card.href}
 					class="group relative overflow-hidden rounded-3xl border {card.border} bg-gradient-to-br {card.bg} p-5 shadow-xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-2xl"
 				>
-					<div class="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-white/5 blur-2xl"></div>
+					<div class="absolute -top-8 -left-8 h-24 w-24 rounded-full bg-white/5 blur-2xl"></div>
 
 					<div class="relative flex items-start justify-between gap-4">
 						<div class="text-right">
@@ -210,7 +206,9 @@
 		</section>
 
 		<section class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-			<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6">
+			<div
+				class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6"
+			>
 				<div class="mb-5 flex items-center justify-between gap-4">
 					<div class="text-right">
 						<h2 class="text-xl font-black text-white sm:text-2xl">أدوات المحتوى</h2>
@@ -241,7 +239,9 @@
 				</div>
 			</div>
 
-			<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6">
+			<div
+				class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6"
+			>
 				<div class="mb-5 text-right">
 					<h2 class="text-xl font-black text-white sm:text-2xl">إدارة الموقع</h2>
 					<p class="mt-1 text-sm text-gray-400">المستخدمون، التعليقات، والإعدادات.</p>
@@ -265,7 +265,9 @@
 								</div>
 							</div>
 
-							<span class="text-gray-500 transition group-hover:-translate-x-1 group-hover:text-white">
+							<span
+								class="text-gray-500 transition group-hover:-translate-x-1 group-hover:text-white"
+							>
 								←
 							</span>
 						</a>
@@ -275,7 +277,9 @@
 		</section>
 
 		<section class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
-			<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6">
+			<div
+				class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6"
+			>
 				<div class="mb-5 flex items-center justify-between gap-4">
 					<div class="text-right">
 						<h2 class="text-xl font-black text-white sm:text-2xl">أحدث المستخدمين</h2>
@@ -309,19 +313,25 @@
 								</div>
 							</div>
 
-							<span class="shrink-0 text-xs font-bold text-blue-300 transition group-hover:text-blue-200">
+							<span
+								class="shrink-0 text-xs font-bold text-blue-300 transition group-hover:text-blue-200"
+							>
 								تفاصيل
 							</span>
 						</a>
 					{:else}
-						<div class="rounded-2xl border border-dashed border-white/10 p-8 text-center text-gray-400">
+						<div
+							class="rounded-2xl border border-dashed border-white/10 p-8 text-center text-gray-400"
+						>
 							لا يوجد مستخدمون جدد.
 						</div>
 					{/each}
 				</div>
 			</div>
 
-			<div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6">
+			<div
+				class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6"
+			>
 				<div class="mb-5 flex items-center justify-between gap-4">
 					<div class="text-right">
 						<h2 class="text-xl font-black text-white sm:text-2xl">تعليقات بانتظار الموافقة</h2>
@@ -369,7 +379,9 @@
 			</div>
 		</section>
 
-		<section class="mt-6 rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6">
+		<section
+			class="mt-6 rounded-[2rem] border border-white/10 bg-white/[0.04] p-4 shadow-xl shadow-black/20 sm:p-6"
+		>
 			<div class="mb-5 flex flex-col gap-2 text-right sm:flex-row sm:items-end sm:justify-between">
 				<div>
 					<h2 class="text-xl font-black text-white sm:text-2xl">المانجا الأكثر قراءة</h2>
@@ -393,7 +405,9 @@
 								<p class="truncate font-bold text-white">{manga.title}</p>
 							</div>
 
-							<span class="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-gray-200">
+							<span
+								class="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-gray-200"
+							>
 								{manga.reads} قراءة
 							</span>
 						</div>

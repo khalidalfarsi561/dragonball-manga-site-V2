@@ -93,16 +93,16 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 			firstUnreadChapter,
 			readCount: readChapterIds.size
 		};
-		} catch (err: unknown) {
-			// The error was happening before this catch block.
-			// It's still good to have for other potential errors.
-			const pbError = err as { status?: number };
-			if (pbError.status === 404) {
-				throw error(404, 'The requested manga does not exist.');
-			}
-			console.error('Failed to load manga page:', err);
-			throw error(500, 'A server error occurred while loading the manga page.');
+	} catch (err: unknown) {
+		// The error was happening before this catch block.
+		// It's still good to have for other potential errors.
+		const pbError = err as { status?: number };
+		if (pbError.status === 404) {
+			throw error(404, 'The requested manga does not exist.');
 		}
+		console.error('Failed to load manga page:', err);
+		throw error(500, 'A server error occurred while loading the manga page.');
+	}
 };
 
 export const actions: Actions = {
