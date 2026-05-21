@@ -1,24 +1,12 @@
 import { dev } from '$app/environment';
-import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
-import { DRAGON_BALL_SECRET } from '$env/static/private';
-import PocketBase from 'pocketbase';
 import type { Handle, HandleServerError } from '@sveltejs/kit';
-
-function createRequestPocketBase() {
-	return new PocketBase(PUBLIC_POCKETBASE_URL);
-}
-
-async function createFindToken(userId: string, ballNumber: number): Promise<string> {
-	const data = new TextEncoder().encode(`${userId}${ballNumber}${DRAGON_BALL_SECRET}`);
-	const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
-}
+import { createDragonBallToken, createPbClient } from '$lib/server/pocketbase';
+import PocketBase from 'pocketbase';
 
 export async function grantXp(
 	userId: string,
 	amount: number,
-	client: PocketBase = createRequestPocketBase()
+	client: PocketBase = createPbClient()
 ) {
 	if (!userId || amount <= 0) return;
 
@@ -48,7 +36,7 @@ export async function grantXp(
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const requestPb = createRequestPocketBase();
+	const requestPb = createPbClient();
 	event.locals.pb = requestPb;
 
 	requestPb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
@@ -112,7 +100,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 						const ballToFind = availableBalls[Math.floor(Math.random() * availableBalls.length)];
 						event.locals.dragonBall = {
 							ball_number: ballToFind,
-							find_token: await createFindToken(user.id, ballToFind)
+							find_token: await createDragonBallToken(user.id, ballToFind)
 						};
 					}
 				}

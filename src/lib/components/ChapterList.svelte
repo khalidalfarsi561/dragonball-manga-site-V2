@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import type { EnrichedChapter, Manga } from '$lib/types';
 
 	type Props = {
@@ -29,8 +29,8 @@
 			nextChapters = nextChapters.filter((chapter) => !chapter.isRead);
 		}
 
-		if (searchTerm.trim()) {
-			const term = searchTerm.trim();
+		const term = searchTerm.trim();
+		if (term) {
 			nextChapters = nextChapters.filter((chapter) =>
 				chapter.chapter_number.toString().includes(term)
 			);

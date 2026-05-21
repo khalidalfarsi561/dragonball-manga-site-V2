@@ -1,38 +1,40 @@
-// src/routes/api/collect-ball/+server.ts
-import { json, error } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { pb } from '$lib/pocketbase';
-import { DRAGON_BALL_SECRET } from '$env/static/private';
-
-async function createFindToken(userId: string, ballNumber: number): Promise<string> {
-	const data = new TextEncoder().encode(`${userId}-${ballNumber}-${DRAGON_BALL_SECRET}`);
-	const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-}
+import { createDragonBallToken, createPbClient } from '$lib/server/pocketbase';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
 		throw error(401, 'يجب تسجيل الدخول أولاً.');
 	}
 
+	const pb = createPbClient();
 	const formData = await request.formData();
 	const ballNumber = Number(formData.get('ball_number'));
-	const receivedToken = formData.get('find_token') as string;
+	const receivedToken = String(formData.get('find_token') || '');
 
-	const expectedToken = await createFindToken(locals.user.id, ballNumber);
+	if (!Number.isInteger(ballNumber) || ballNumber < 1 || ballNumber > 7) {
+		throw error(400, 'رقم الكرة غير صالح.');
+	}
+
+	const expectedToken = await createDragonBallToken(locals.user.id, ballNumber);
 	if (receivedToken !== expectedToken) {
 		throw error(400, 'محاولة غير صالحة. التوكن غير متطابق.');
 	}
 
 	try {
 		let userBallsRecord;
+
 		try {
 			userBallsRecord = await pb
 				.collection('user_dragonballs')
 				.getFirstListItem(`user.id = "${locals.user.id}"`);
-		} catch (err: any) {
-			if (err.status === 404) {
+		} catch (err: unknown) {
+			if (
+				typeof err === 'object' &&
+				err !== null &&
+				'status' in err &&
+				(err as { status?: number }).status === 404
+			) {
 				userBallsRecord = await pb.collection('user_dragonballs').create({
 					user: locals.user.id,
 					collected_balls: []
