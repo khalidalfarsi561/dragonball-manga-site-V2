@@ -15,7 +15,7 @@
 	href="/manga/{manga.slug}"
 	class="group flex transform flex-col overflow-hidden rounded-lg bg-gray-800 shadow-xl transition-all duration-300 hover:-translate-y-2"
 >
-	<div class="manga-card-image-container relative w-full overflow-hidden">
+	<div class="manga-card-image-container relative aspect-[2/3] w-full overflow-hidden">
 		<div class="absolute top-2 right-2 z-10 flex flex-row-reverse flex-wrap items-center gap-2">
 			{#if manga.status === 'مستمرة'}
 				<span class="rounded-full bg-blue-500 px-2.5 py-1 text-xs font-bold text-white shadow-md">
@@ -71,10 +71,15 @@
 			loading="lazy"
 		/>
 	</div>
-	<div class="flex flex-grow flex-col p-4 md:p-6">
-		<h3 class="mb-2 text-center text-xl font-extrabold md:text-2xl" dir="rtl">{manga.title}</h3>
+	<div class="flex flex-grow flex-col p-3 md:p-6">
+		<h3 class="mb-1 text-center text-sm leading-tight font-extrabold md:mb-2 md:text-2xl" dir="rtl">
+			{manga.title}
+		</h3>
 		<div class="relative">
-			<p class="line-clamp-3 text-sm leading-relaxed text-gray-300 md:text-base" dir="rtl">
+			<p
+				class="line-clamp-2 text-xs leading-relaxed text-gray-300 md:line-clamp-3 md:text-base"
+				dir="rtl"
+			>
 				{manga.description}
 			</p>
 			<div
