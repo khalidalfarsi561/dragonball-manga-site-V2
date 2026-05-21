@@ -1,13 +1,12 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { createDragonBallToken, createPbClient } from '$lib/server/pocketbase';
+import { createDragonBallToken } from '$lib/server/pocketbase';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!locals.user) {
 		throw error(401, 'يجب تسجيل الدخول أولاً.');
 	}
 
-	const pb = createPbClient();
 	const formData = await request.formData();
 	const ballNumber = Number(formData.get('ball_number'));
 	const receivedToken = String(formData.get('find_token') || '');
@@ -25,9 +24,9 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		let userBallsRecord;
 
 		try {
-			userBallsRecord = await pb
+			userBallsRecord = await locals.pb
 				.collection('user_dragonballs')
-				.getFirstListItem(`user.id = "${locals.user.id}"`);
+				.getFirstListItem(`user = "${locals.user.id}"`);
 		} catch (err: unknown) {
 			if (
 				typeof err === 'object' &&
@@ -35,7 +34,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				'status' in err &&
 				(err as { status?: number }).status === 404
 			) {
-				userBallsRecord = await pb.collection('user_dragonballs').create({
+				userBallsRecord = await locals.pb.collection('user_dragonballs').create({
 					user: locals.user.id,
 					collected_balls: []
 				});
@@ -51,7 +50,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		const updatedBalls = [...collected, ballNumber].sort((a, b) => a - b);
-		await pb.collection('user_dragonballs').update(userBallsRecord.id, {
+		await locals.pb.collection('user_dragonballs').update(userBallsRecord.id, {
 			collected_balls: updatedBalls
 		});
 
