@@ -1,10 +1,8 @@
 // src/lib/types.ts
 
-import type { RecordModel } from 'pocketbase';
-
-// ===============================================================
-// ✨ الأنواع الأساسية والإضافات الجديدة ✨
-// ===============================================================
+ // ===============================================================
+ // ✨ الأنواع الأساسية والإضافات الجديدة ✨
+ // ===============================================================
 
 /**
  * يمثل النوع الأساسي لأي سجل قادم من PocketBase، لتقليل التكرار.
@@ -77,6 +75,7 @@ export interface Manga {
 
 	// هذا حقل نضيفه لاحقاً في الكود، لذلك نجعله اختيارياً
 	cover_image_url?: string;
+	header_image_url?: string;
 
 	// إثراء النوع بمعلومات إضافية مفيدة
 	total_chapters?: number;
@@ -112,20 +111,9 @@ export interface LastReadChapterInfo extends Chapter {
 	last_page_read: number;
 }
 
-interface MangaRecord {
-	id: string;
-	slug: string;
-	title: string;
-	cover: string;
-}
-
 /**
  * تعريف شكل بيانات الفصل الأساسية.
  */
-interface ChapterRecord {
-	id: string;
-	chapter_number: number;
-}
 
 /**
  * نوع يمثل بيانات المستخدم الأساسية التي نعرضها مع التعليق.

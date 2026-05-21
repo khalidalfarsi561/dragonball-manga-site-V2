@@ -41,18 +41,16 @@
 <svelte:body onclick={() => (isActionsMenuOpen = false)} />
 
 <header
-	class="relative flex min-h-[60vh] items-end bg-cover bg-center p-4 md:bg-fixed md:p-8"
+	class="relative flex min-h-[220px] items-start bg-cover bg-center p-4 md:p-8"
 	style="background-image: url({manga.cover_image_url});"
 >
 	<div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
 	<div class="relative z-10 w-full">
-		<h1 class="text-4xl font-extrabold text-white md:text-5xl" dir="rtl">{manga.title}</h1>
-		<div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-gray-300" dir="rtl">
-			<span>الحالة: <span class="font-bold text-orange-400">{manga.status}</span></span>
-			<span>المؤلف: <span class="font-bold text-orange-400">{manga.author}</span></span>
-		</div>
-
-		<p class="mt-4 max-w-2xl text-base text-gray-200 md:text-lg" dir="rtl">{manga.description}</p>
+		<img
+			src={manga.header_image_url}
+			alt={manga.title}
+			class="mx-auto mt-5 max-h-[45px] w-full max-w-4xl object-contain"
+		/>
 
 		{#if user}
 			<div class="mt-6" dir="rtl">
