@@ -148,10 +148,34 @@
 			{/if}
 		</div>
 	</nav>
-	<main class="flex-1 overflow-y-auto">
+	<main class="flex-1 overflow-y-auto pb-20">
 		<slot />
 	</main>
 </div>
+
+<nav class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 backdrop-blur md:hidden">
+	<div class="flex h-16 items-center justify-around">
+		<a href="/" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+			<span class="text-xl">🏠</span>
+			<span class="text-xs">الرئيسية</span>
+		</a>
+
+		<a href="/quizzes" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+			<span class="text-xl">🧠</span>
+			<span class="text-xs">اختبارات</span>
+		</a>
+
+		<a href="/leaderboard" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+			<span class="text-xl">🏆</span>
+			<span class="text-xs">الترتيب</span>
+		</a>
+
+		<a href="/profile" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+			<span class="text-xl">👤</span>
+			<span class="text-xs">حسابي</span>
+		</a>
+	</div>
+</nav>
 
 <style>
 	:global(:root:fullscreen #main-nav) {
