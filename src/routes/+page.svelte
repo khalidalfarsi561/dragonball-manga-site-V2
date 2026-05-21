@@ -45,7 +45,7 @@
 				<select
 					name="status"
 					on:change={(event) => event.currentTarget?.form?.submit()}
-					class="appearance-none rounded-lg border-2 border-transparent bg-gray-800 px-4 py-2 pr-8 font-semibold text-white transition hover:border-gray-600 focus:border-orange-500 focus:outline-none"
+					class="appearance-none rounded-lg border-2 border-transparent bg-gray-800 px-4 py-2 pr-8 text-center font-semibold text-white transition hover:border-gray-600 focus:border-orange-500 focus:outline-none"
 				>
 					<option value="" selected={status === ''}>كل الحالات</option>
 					<option value="مستمرة" selected={status === 'مستمرة'}>مستمرة</option>

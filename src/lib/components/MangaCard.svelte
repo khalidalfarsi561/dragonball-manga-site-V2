@@ -75,26 +75,7 @@
 		<h3 class="mb-1 text-center text-sm leading-tight font-extrabold md:mb-2 md:text-2xl" dir="rtl">
 			{manga.title}
 		</h3>
-		<div class="relative">
-			<p
-				class="line-clamp-2 text-xs leading-relaxed text-gray-300 md:line-clamp-3 md:text-base"
-				dir="rtl"
-			>
-				{manga.description}
-			</p>
-			<div
-				class="absolute bottom-0 h-1/2 w-full bg-gradient-to-t from-gray-800 to-transparent"
-			></div>
-		</div>
 	</div>
 </a>
 
-<style>
-	.line-clamp-3 {
-		overflow: hidden;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 3;
-		line-clamp: 3;
-	}
-</style>
+<style></style>
