@@ -121,15 +121,28 @@
 					<label for="search" class="mb-1 block text-sm font-medium text-gray-300"
 						>ابحث عن اختبار</label
 					>
-					<input
-						type="search"
-						name="search"
-						id="search"
-						placeholder="مثال: قصة فيجيتا..."
-						value={data.currentSearch}
-						on:input={handleFormInput}
-						class="w-full appearance-none rounded-lg bg-gray-700 px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
-					/>
+					<div class="relative">
+						<input
+							type="search"
+							name="search"
+							id="search"
+							placeholder="مثال: قصة فيجيتا..."
+							value={data.currentSearch}
+							on:input={handleFormInput}
+							class="w-full appearance-none rounded-lg bg-gray-700 py-2 pr-8 pl-4 text-right text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+						/>
+
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 576 512"
+							fill="currentColor"
+							class="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-orange-500"
+						>
+							<path
+								d="M448.3 208c0 45.9-14.9 88.3-40 122.7L534.9 457.4 557.5 480 512.3 525.3 489.6 502.6 363 376c-34.4 25.2-76.8 40-122.7 40-114.9 0-208-93.1-208-208s93.1-208 208-208 208 93.1 208 208zm-208 144a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+							/>
+						</svg>
+					</div>
 				</div>
 
 				<div>
@@ -171,9 +184,24 @@
 				</div>
 
 				<div>
-					<label for="difficulty" class="mb-1 block text-sm font-medium text-gray-300"
-						>مستوى الصعوبة</label
+					<label
+						for="difficulty"
+						class="mb-1 flex flex-row-reverse items-center justify-end gap-1 text-sm font-medium text-gray-300"
 					>
+						<span>مستوى الصعوبة</span>
+
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 448 512"
+							fill="currentColor"
+							class="h-4.5 w-4.5 text-orange-500"
+						>
+							<path opacity=".4" d="" />
+							<path
+								d="M312 152c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 304c0 13.3 10.7 24 24 24s24-10.7 24-24l0-304zM160 256c-13.3 0-24 10.7-24 24l0 176c0 13.3 10.7 24 24 24s24-10.7 24-24l0-176c0-13.3-10.7-24-24-24zM32 384c-13.3 0-24 10.7-24 24l0 48c0 13.3 10.7 24 24 24s24-10.7 24-24l0-48c0-13.3-10.7-24-24-24z"
+							/>
+						</svg>
+					</label>
 					<select
 						name="difficulty"
 						id="difficulty"
@@ -257,9 +285,11 @@
 				</div>
 			{/if}
 		{:else}
-			<div class="rounded-lg bg-gray-800 py-24 text-center">
-				<p class="text-2xl text-gray-400">لا توجد اختبارات تطابق خياراتك الحالية.</p>
-				<p class="mt-4 text-gray-500">حاول تغيير فلاتر البحث أو اضغط على زر المسح للبدء من جديد!</p>
+			<div class="py-24 text-center">
+				<p class="text-xl whitespace-nowrap text-gray-400">
+					لا توجد اختبارات تطابق خياراتك الحالية
+				</p>
+				<p class="mt-4 text-gray-500">حاول تغيير فلاتر البحث أو اضغط على زر المسح</p>
 			</div>
 		{/if}
 	</div>
