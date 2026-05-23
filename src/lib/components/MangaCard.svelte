@@ -18,7 +18,9 @@
 	<div class="manga-card-image-container relative aspect-[2/3] w-full overflow-hidden">
 		<div class="absolute top-1 right-0 z-10 flex flex-row-reverse flex-wrap items-center gap-2">
 			{#if manga.status === 'مستمرة'}
-				<span class="scale-75 rounded-full bg-blue-500 px-2.5 py-1 text-xs font-bold text-white shadow-md">
+				<span
+					class="scale-75 rounded-full bg-blue-500 px-2.5 py-1 text-xs font-bold text-white shadow-md"
+				>
 					مستمرة
 				</span>
 			{:else if manga.status === 'مكتملة'}

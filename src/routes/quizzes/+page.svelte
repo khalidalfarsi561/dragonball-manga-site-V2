@@ -133,7 +133,28 @@
 				</div>
 
 				<div>
-					<label for="category" class="mb-1 block text-sm font-medium text-gray-300">التصنيف</label>
+					<label
+						for="category"
+						class="mb-1 flex flex-row-reverse items-center justify-end gap-1 text-sm font-medium text-gray-300"
+					>
+						<span>التصنيف</span>
+
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="#f97316"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-tag-icon lucide-tag h-3.5 w-3.5"
+						>
+							<path
+								d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"
+							/>
+							<circle cx="7.5" cy="7.5" r=".5" fill="#f97316" />
+						</svg>
+					</label>
 					<select
 						name="category"
 						id="category"

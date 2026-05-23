@@ -50,11 +50,7 @@
 <div class="flex h-screen flex-col overflow-hidden bg-gray-900 font-[Tajawal] text-white">
 	<nav id="main-nav" class="z-50 flex-shrink-0 bg-transparent p-4 text-white">
 		<div class="container mx-auto flex flex-wrap items-center justify-between gap-4">
-			<a
-				href="/profile"
-				class="md:hidden"
-				aria-label="الملف الشخصي"
-			>
+			<a href="/profile" class="md:hidden" aria-label="الملف الشخصي">
 				{#if data.user?.avatar}
 					<img
 						src={data.user.avatarUrl}
@@ -153,7 +149,9 @@
 	</main>
 </div>
 
-<nav class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 backdrop-blur md:hidden">
+<nav
+	class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 backdrop-blur md:hidden"
+>
 	<div class="flex h-16 items-center justify-around">
 		<a href="/" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
 			<span class="text-xl">🏠</span>

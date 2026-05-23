@@ -206,7 +206,7 @@
 							<div class="flex-grow">
 								<a
 									href="/manga/{record.expand?.manga.slug}/{record.expand?.chapter.chapter_number}"
-									class="block truncate whitespace-nowrap text-sm font-bold hover:text-orange-400"
+									class="block truncate text-sm font-bold whitespace-nowrap hover:text-orange-400"
 								>
 									{record.expand?.manga.title} - الفصل {record.expand?.chapter.chapter_number}
 								</a>
