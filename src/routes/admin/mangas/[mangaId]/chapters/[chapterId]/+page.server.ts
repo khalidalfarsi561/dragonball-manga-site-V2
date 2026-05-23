@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			chapter,
 			pages
 		};
-	} catch (err) {
+	} catch {
 		throw error(404, 'الفصل أو المانجا غير موجودة');
 	}
 };
@@ -40,7 +40,7 @@ export const actions: Actions = {
 
 		try {
 			await pb.collection('pages').delete(pageId);
-		} catch (err) {
+		} catch {
 			return fail(500, { error: 'فشل حذف الصفحة.' });
 		}
 
