@@ -16,8 +16,10 @@
 
 <div class="min-h-screen bg-gray-900 p-8 font-[Tajawal] text-white" dir="rtl">
 	<div class="container mx-auto">
-		<h1 class="mb-2 text-center text-4xl font-bold text-orange-400">لوحة صدارة المحاربين</h1>
-		<p class="mb-12 text-center text-gray-300">
+		<h1 class="mb-5 text-center text-3xl font-bold whitespace-nowrap text-orange-400">
+			لوحة صدارة المحاربين
+		</h1>
+		<p class="mb-12 text-center text-base text-gray-300">
 			شاهد ترتيب أقوى المقاتلين في الموقع بناءً على مستوى طاقتهم
 		</p>
 

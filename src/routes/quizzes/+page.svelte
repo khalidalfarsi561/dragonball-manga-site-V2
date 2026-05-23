@@ -114,9 +114,23 @@
 		<form
 			method="GET"
 			on:submit|preventDefault={(e) => applyFilters(e.currentTarget)}
-			class="mb-12 rounded-lg bg-gray-800 p-4"
+			class="relative mb-12 rounded-lg bg-gray-800 p-4"
 		>
-			<div class="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
+			<div
+				class="absolute top-3 left-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gray-700/80 shadow-lg backdrop-blur-sm"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 512 512"
+					fill="currentColor"
+					class="h-5 w-5 text-orange-500"
+				>
+					<path
+						d="M0 93.7C0 77.3 13.3 64 29.7 64l452.7 0c16.4 0 29.7 13.3 29.7 29.7 0 7.9-3.1 15.4-8.7 21L336 281.9 336 482.3c0 16.4-13.3 29.7-29.7 29.7-7.9 0-15.4-3.1-21-8.7L183 401c-4.5-4.5-7-10.6-7-17L176 281.9 8.7 114.6C3.1 109.1 0 101.5 0 93.7zM73.9 112L217 255c4.5 4.5 7 10.6 7 17l0 102.1 64 64 0-166.1c0-6.4 2.5-12.5 7-17l143-143-364.1 0z"
+					/>
+				</svg>
+			</div>
+			<div class="grid grid-cols-1 items-end gap-4 pt-6 md:grid-cols-4">
 				<div class="md:col-span-2">
 					<label for="search" class="mb-1 block text-sm font-medium text-gray-300"
 						>ابحث عن اختبار</label
@@ -232,19 +246,14 @@
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="lucide lucide-rotate-ccw"
-							><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path
-								d="M3 3v5h5"
-							/></svg
+							viewBox="0 0 512 512"
+							fill="currentColor"
+							class="h-5 w-5 text-[#B4C6FF]"
 						>
+							<path
+								d="M480.1 192l7.9 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2S477.9 .2 471 7L419.3 58.8C375 22.1 318 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1C79.2 135.5 159.3 64 256 64 300.4 64 341.2 79 373.7 104.3L327 151c-6.9 6.9-8.9 17.2-5.2 26.2S334.3 192 344 192l136.1 0zm29.4 100.5c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-44.4 0-85.2-15-117.7-40.3L185 361c6.9-6.9 8.9-17.2 5.2-26.2S177.7 320 168 320L24 320c-13.3 0-24 10.7-24 24L0 488c0 9.7 5.8 18.5 14.8 22.2S34.1 511.8 41 505l51.8-51.8C137 489.9 194 512 256 512 385 512 491.7 416.6 509.4 292.5z"
+							/>
+						</svg>
 					</button>
 				</div>
 			</div>
