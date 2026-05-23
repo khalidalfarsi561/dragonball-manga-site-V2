@@ -25,12 +25,12 @@
 
 		<div class="mx-auto max-w-4xl overflow-hidden rounded-lg bg-gray-800 shadow-2xl" dir="rtl">
 			<table class="w-full text-center">
-				<thead class="bg-gray-700">
+				<thead class="bg-gray-700 whitespace-nowrap">
 					<tr>
-						<th class="w-20 p-4">الترتيب</th>
-						<th class="p-4">اسم المحارب</th>
-						<th class="p-4">مستوى الطاقة</th>
-						<th class="p-4">الخبرة (XP)</th>
+						<th class="w-20 p-2 text-sm">الترتيب</th>
+						<th class="p-2 text-sm">اسم المحارب</th>
+						<th class="p-2 text-sm">مستوى الطاقة</th>
+						<th class="p-2 text-sm">الخبرة</th>
 					</tr>
 				</thead>
 				<tbody>
