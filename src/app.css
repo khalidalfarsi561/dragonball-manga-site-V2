@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@font-face {
+	font-family: 'El Messiri';
+	src: url('/fonts/ElMessiri-VariableFont_wght.ttf') format('truetype');
+	font-weight: 400 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 @theme {
 	--font-sans: 'Tajawal', sans-serif;
 

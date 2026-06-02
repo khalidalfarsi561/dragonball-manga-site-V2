@@ -150,22 +150,30 @@
 </div>
 
 <nav
-	class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 backdrop-blur md:hidden"
+	class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 backdrop-blur md:hidden font-[El_Messiri]"
 >
 	<div class="flex h-16 items-center justify-around">
 		<a href="/" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
-			<span class="text-xl">🏠</span>
-			<span class="text-xs">الرئيسية</span>
+			<img
+	src="https://i.ibb.co/1G85wXr8/home.webp"
+	alt="الرئيسية"
+	class="h-6 w-6 s-7IPF32Wcq3s8"
+/>
+			<span class="mt-1 text-xs">الرئيسية</span>
 		</a>
 
 		<a href="/quizzes" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
-			<span class="text-xl">🧠</span>
-			<span class="text-xs">اختبارات</span>
+			<img
+	src="https://i.ibb.co/N6WHVMvF/quiz.webp"
+	alt="الرئيسية"
+	class="h-6 w-6 s-7IPF32Wcq3s8"
+/>
+			<span class="mt-1 text-xs">اختبارات</span>
 		</a>
 
 		<a href="/leaderboard" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
 			<span class="text-xl">🏆</span>
-			<span class="text-xs">الترتيب</span>
+			<span class="mt-1 text-xs">الترتيب</span>
 		</a>
 
 		<a href="/profile" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
