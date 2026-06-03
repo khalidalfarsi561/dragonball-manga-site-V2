@@ -72,7 +72,7 @@
 	dir="rtl"
 >
 	<div
-		class="w-[92%] max-w-sm rounded-2xl border border-white/10 bg-gradient-to-b from-gray-800 to-gray-900 p-4 shadow-2xl shadow-black/40 sm:p-5"
+		class="w-[92%] max-w-sm scale-[0.92] rounded-2xl border border-white/10 bg-gradient-to-b from-gray-800 to-gray-900 p-4 shadow-2xl shadow-black/40 sm:scale-100 sm:p-5"
 	>
 		<h1 class="mb-2 text-center text-3xl font-extrabold tracking-tight text-white">أنشئ حسابك</h1>
 		<p class="mb-5 text-center text-sm text-gray-400">وابدأ رحلتك في عالم دراغون بول</p>
@@ -86,19 +86,19 @@
 		<form method="POST" use:enhance>
 			<!-- عرض الأخطاء العامة التي لا ترتبط بحقل معين -->
 			{#if $errors._errors}
-				<div class="mb-4 rounded-md bg-red-900/50 p-3 text-center text-red-300">
+				<div class="mb-3 rounded-md bg-red-900/50 p-3 text-center text-red-300">
 					{$errors._errors}
 				</div>
 			{/if}
 
 			<!-- حقل اسم المستخدم -->
-			<div class="mb-4">
+			<div class="mb-3">
 				<label for="username" class="mb-2 block text-gray-300">اسم المستخدم</label>
 				<input
 					type="text"
 					name="username"
 					id="username"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.username
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-2.5 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.username
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.username}
@@ -111,13 +111,13 @@
 			</div>
 
 			<!-- حقل البريد الإلكتروني -->
-			<div class="mb-4">
+			<div class="mb-3">
 				<label for="email" class="mb-2 block text-gray-300">البريد الإلكتروني</label>
 				<input
 					type="email"
 					name="email"
 					id="email"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.email
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-2.5 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.email
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.email}
@@ -129,13 +129,13 @@
 			</div>
 
 			<!-- حقل كلمة المرور -->
-			<div class="mb-4">
+			<div class="mb-3">
 				<label for="password" class="mb-2 block text-gray-300">كلمة المرور</label>
 				<input
 					type="password"
 					name="password"
 					id="password"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.password
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-2.5 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.password
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.password}
@@ -168,7 +168,7 @@
 					type="password"
 					name="passwordConfirm"
 					id="passwordConfirm"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.passwordConfirm
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-2.5 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.passwordConfirm
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.passwordConfirm}
