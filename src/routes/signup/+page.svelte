@@ -68,7 +68,7 @@
 </svelte:head>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-900 font-[Tajawal]" dir="rtl">
-	<div class="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-xl">
+	<div class="w-[92%] max-w-sm rounded-lg bg-gray-800 p-4 sm:p-6 shadow-xl">
 		<h1 class="mb-2 text-center text-3xl font-bold text-white">أنشئ حسابك</h1>
 		<p class="mb-6 text-center text-gray-400">وابدأ رحلتك في عالم دراغون بول</p>
 
