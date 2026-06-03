@@ -67,14 +67,15 @@
 	<title>إنشاء حساب جديد</title>
 </svelte:head>
 
-<div class="flex min-h-screen items-center justify-center bg-gray-900 font-[Tajawal]" dir="rtl">
-	<div class="w-[92%] max-w-sm rounded-2xl border border-white/10 bg-gradient-to-b from-gray-800 to-gray-900 p-5 shadow-2xl shadow-black/40 sm:p-7">
-		<h1 class="mb-2 text-center text-3xl font-extrabold tracking-tight text-white">
-	أنشئ حسابك
-</h1>
-		<p class="mb-7 text-center text-sm text-gray-400">
-	وابدأ رحلتك في عالم دراغون بول
-</p>
+<div
+	class="flex h-screen items-center justify-center overflow-hidden bg-gray-900 font-[Tajawal]"
+	dir="rtl"
+>
+	<div
+		class="w-[92%] max-w-sm rounded-2xl border border-white/10 bg-gradient-to-b from-gray-800 to-gray-900 p-4 shadow-2xl shadow-black/40 sm:p-5"
+	>
+		<h1 class="mb-2 text-center text-3xl font-extrabold tracking-tight text-white">أنشئ حسابك</h1>
+		<p class="mb-5 text-center text-sm text-gray-400">وابدأ رحلتك في عالم دراغون بول</p>
 
 		<!-- 
       السر الكبير هنا: `use:enhance`.
@@ -97,7 +98,7 @@
 					type="text"
 					name="username"
 					id="username"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.username
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.username
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.username}
@@ -116,7 +117,7 @@
 					type="email"
 					name="email"
 					id="email"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.email
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.email
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.email}
@@ -134,7 +135,7 @@
 					type="password"
 					name="password"
 					id="password"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.password
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.password
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.password}
@@ -167,7 +168,7 @@
 					type="password"
 					name="passwordConfirm"
 					id="passwordConfirm"
-					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.passwordConfirm
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white transition outline-none focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.passwordConfirm
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.passwordConfirm}
@@ -189,7 +190,7 @@
 		</form>
 
 		<!-- --- الميزة الجديدة: تسجيل الدخول عبر وسائل التواصل الاجتماعي --- -->
-		<div class="my-6 flex items-center">
+		<div class="my-4 flex items-center">
 			<!-- ✨ الإصلاح الثاني هنا ✨ -->
 			<div class="flex-grow border-t border-gray-600"></div>
 			<span class="mx-4 flex-shrink text-sm text-gray-400">أو سجل عبر</span>
@@ -225,7 +226,7 @@
 			<!-- يمكنك إضافة أزرار أخرى هنا (تويتر، جيت هاب...) -->
 		</div>
 
-		<p class="mt-8 text-center text-gray-400">
+		<p class="mt-5 text-center text-sm text-gray-400">
 			لديك حساب بالفعل؟ <a href="/login" class="text-orange-500 hover:underline">سجل الدخول</a>
 		</p>
 	</div>
