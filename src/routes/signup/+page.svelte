@@ -68,9 +68,13 @@
 </svelte:head>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-900 font-[Tajawal]" dir="rtl">
-	<div class="w-[92%] max-w-sm rounded-lg bg-gray-800 p-4 sm:p-6 shadow-xl">
-		<h1 class="mb-2 text-center text-3xl font-bold text-white">أنشئ حسابك</h1>
-		<p class="mb-6 text-center text-gray-400">وابدأ رحلتك في عالم دراغون بول</p>
+	<div class="w-[92%] max-w-sm rounded-2xl border border-white/10 bg-gradient-to-b from-gray-800 to-gray-900 p-5 shadow-2xl shadow-black/40 sm:p-7">
+		<h1 class="mb-2 text-center text-3xl font-extrabold tracking-tight text-white">
+	أنشئ حسابك
+</h1>
+		<p class="mb-7 text-center text-sm text-gray-400">
+	وابدأ رحلتك في عالم دراغون بول
+</p>
 
 		<!-- 
       السر الكبير هنا: `use:enhance`.
@@ -93,7 +97,7 @@
 					type="text"
 					name="username"
 					id="username"
-					class="w-full rounded border bg-gray-700 p-2 text-white focus:border-orange-500 focus:outline-none {$errors.username
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.username
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.username}
@@ -112,7 +116,7 @@
 					type="email"
 					name="email"
 					id="email"
-					class="w-full rounded border bg-gray-700 p-2 text-white focus:border-orange-500 focus:outline-none {$errors.email
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.email
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.email}
@@ -130,7 +134,7 @@
 					type="password"
 					name="password"
 					id="password"
-					class="w-full rounded border bg-gray-700 p-2 text-white focus:border-orange-500 focus:outline-none {$errors.password
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.password
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.password}
@@ -163,7 +167,7 @@
 					type="password"
 					name="passwordConfirm"
 					id="passwordConfirm"
-					class="w-full rounded border bg-gray-700 p-2 text-white focus:border-orange-500 focus:outline-none {$errors.passwordConfirm
+					class="w-full rounded-xl border border-white/10 bg-gray-700/70 px-4 py-3 text-white outline-none transition focus:border-orange-500 focus:bg-gray-700 focus:ring-2 focus:ring-orange-500/20 {$errors.passwordConfirm
 						? 'border-red-500'
 						: 'border-gray-600'}"
 					bind:value={$form.passwordConfirm}
@@ -176,7 +180,7 @@
 
 			<button
 				type="submit"
-				class="w-full rounded bg-orange-600 px-4 py-2 font-bold text-white transition-colors hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-orange-500"
+				class="w-full rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 px-4 py-3 font-extrabold text-white shadow-lg shadow-orange-900/30 transition hover:scale-[1.01] hover:from-orange-500 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-70"
 				disabled={$submitting}
 			>
 				<!-- نظهر نصاً مختلفاً أثناء إرسال البيانات -->
@@ -196,7 +200,7 @@
 		<div class="flex justify-center space-x-4 space-x-reverse">
 			<!-- زر جوجل (مثال) -->
 			<button
-				class="flex h-12 w-12 items-center justify-center rounded-full bg-gray-700 transition-colors hover:bg-gray-600"
+				class="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-gray-700/70 shadow-md transition hover:scale-105 hover:bg-gray-600"
 				aria-label="التسجيل باستخدام جوجل"
 			>
 				<svg class="h-6 w-6" viewBox="0 0 48 48">
