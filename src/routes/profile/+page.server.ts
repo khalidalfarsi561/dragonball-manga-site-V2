@@ -1,5 +1,4 @@
 // src/routes/profile/+page.server.ts
-import { pb } from '$lib/pocketbase';
 import { redirect, fail } from '@sveltejs/kit';
 import { grantXp } from '../../hooks.server'; // ✅ لإضافة النقاط عبر منطق المستويات
 import type { Actions, PageServerLoad } from './$types';
@@ -9,19 +8,19 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const user = locals.user;
 	if (user.avatar) {
-		user.avatarUrl = pb.files.getURL(user, user.avatar, { thumb: '100x100' });
+		user.avatarUrl = locals.pb.files.getURL(user, user.avatar, { thumb: '100x100' });
 	}
 
 	const [favorites, readHistory, userDragonBalls] = await Promise.all([
-		pb.collection('favorites').getFullList({
+		locals.pb.collection('favorites').getFullList({
 			filter: `user.id = "${locals.user.id}"`,
 			expand: 'manga'
 		}),
-		pb.collection('read_history').getFullList({
+		locals.pb.collection('read_history').getFullList({
 			filter: `user = "${locals.user.id}"`,
 			fields: 'id'
 		}),
-		pb
+		locals.pb
 			.collection('user_dragonballs')
 			.getFirstListItem(`user.id = "${locals.user.id}"`)
 			.catch(() => null)
@@ -29,7 +28,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	favorites.forEach((fav) => {
 		if (fav.expand && fav.expand.manga) {
-			fav.expand.manga.cover_image_url = pb.files.getURL(
+			fav.expand.manga.cover_image_url = locals.pb.files.getURL(
 				fav.expand.manga,
 				fav.expand.manga.cover_image
 			);
@@ -80,7 +79,7 @@ const allWishes = [
 
 export const actions: Actions = {
 	logout: ({ cookies, locals }) => {
-		pb.authStore.clear();
+		locals.pb.authStore.clear();
 		locals.user = null;
 		locals.admin = false;
 		cookies.set('pb_auth', '', {
@@ -111,7 +110,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			await pb.collection('users').update(locals.user.id, {
+			await locals.pb.collection('users').update(locals.user.id, {
 				password: newPassword,
 				passwordConfirm: newPasswordConfirm,
 				oldPassword: oldPassword
@@ -135,7 +134,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			await pb.collection('users').update(locals.user.id, { avatar });
+			await locals.pb.collection('users').update(locals.user.id, { avatar });
 		} catch (err) {
 			console.error(err);
 			return fail(500, { avatarError: 'فشل رفع الصورة. حاول مرة أخرى.' });
@@ -148,7 +147,7 @@ export const actions: Actions = {
 		if (!locals.user) throw redirect(303, '/login');
 
 		try {
-			await pb.collection('users').update(locals.user.id, { avatar: null });
+			await locals.pb.collection('users').update(locals.user.id, { avatar: null });
 		} catch (err) {
 			console.error(err);
 			return fail(500, { avatarError: 'فشل حذف الصورة.' });
@@ -161,7 +160,7 @@ export const actions: Actions = {
 	summonShenron: async ({ locals }) => {
 		if (!locals.user) throw redirect(303, '/login');
 
-		const userBallsRecord = await pb
+		const userBallsRecord = await locals.pb
 			.collection('user_dragonballs')
 			.getFirstListItem(`user.id = "${locals.user.id}"`);
 
@@ -190,7 +189,7 @@ export const actions: Actions = {
 			return fail(400, { error: 'هذه الأمنية غير صالحة.' });
 		}
 
-		const userBallsRecord = await pb
+		const userBallsRecord = await locals.pb
 			.collection('user_dragonballs')
 			.getFirstListItem(`user.id = "${locals.user.id}"`);
 
@@ -209,16 +208,16 @@ export const actions: Actions = {
 				const xpAmount = Number(payload['xp+']) || 0;
 				delete payload['xp+'];
 				if (Object.keys(payload).length > 0) {
-					await pb.collection('users').update(locals.user.id, payload);
+					await locals.pb.collection('users').update(locals.user.id, payload);
 				}
 				await grantXp(locals.user.id, xpAmount);
 			} else {
-				await pb.collection('users').update(locals.user.id, payload);
+				await locals.pb.collection('users').update(locals.user.id, payload);
 			}
 		}
 
 		// إعادة تعيين كرات التنين
-		await pb.collection('user_dragonballs').update(userBallsRecord.id, {
+		await locals.pb.collection('user_dragonballs').update(userBallsRecord.id, {
 			collected_balls: []
 		});
 
