@@ -16,8 +16,10 @@ export const load: PageServerLoad = async ({ params }) => {
 
 		// الخطوة 2: بناء رابط الصورة بالطريقة الصحيحة
 		pages.forEach((page) => {
-			// استبدلنا السطر القديم بهذا السطر
-			page.imageUrl = `${PUBLIC_CDN_URL}/${page.image_path}`;
+			// إذا كان الرابط يبدأ بـ http، نستخدمه مباشرة (روابط ImgBB)، وإلا نضيف الـ CDN URL
+			page.imageUrl = page.image_path.startsWith('http')
+				? page.image_path
+				: `${PUBLIC_CDN_URL}/${page.image_path}`;
 		});
 
 		return {

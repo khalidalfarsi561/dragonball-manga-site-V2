@@ -32,7 +32,7 @@ export const signupSchema = SignupFormObject.refine(
 // تعريف البيانات لفورم إضافة فصل جديد
 export const mangasSchema = z.object({
 	manga: z.string().min(1, { message: 'يجب اختيار مانجا' }),
-	url: z.string().url({ message: 'الرابط غير صحيح' }),
+	image_urls: z.string().min(1, { message: 'يجب إدخال روابط الصور' }),
 	title: z.string().min(1, { message: 'العنوان مطلوب' }),
 	chapter_number: z.string().min(1, { message: 'رقم الفصل مطلوب' })
 });

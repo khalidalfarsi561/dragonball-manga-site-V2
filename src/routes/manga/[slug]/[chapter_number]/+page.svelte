@@ -273,7 +273,7 @@
 			const end = start + PRELOAD_AHEAD_COUNT;
 			imagesToPreload = pages
 				.slice(start, end)
-				.map((p) => `${baseCdnUrl}/${p.image_path}?width=1200&quality=85`);
+				.map((p) => getImageUrl(p.image_path, 1200, 85));
 		} else {
 			imagesToPreload = [];
 		}
@@ -282,6 +282,15 @@
 	const baseCdnUrl = PUBLIC_CDN_URL;
 	const placeholderSrc =
 		'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+	function getImageUrl(imagePath: string, width?: number, quality?: number): string {
+		if (!imagePath) return placeholderSrc;
+		if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+			return imagePath;
+		}
+		const params = width && quality ? `?width=${width}&quality=${quality}` : '';
+		return `${baseCdnUrl}/${imagePath}${params}`;
+	}
 
 	let isFullscreen = false;
 
@@ -714,7 +723,7 @@
 						class:border-transparent={$readingMode !== 'horizontal' || currentPageIndex !== i}
 					>
 						<img
-							src="{baseCdnUrl}/{page.image_path}?width=150&quality=75"
+							src={getImageUrl(page.image_path, 150, 75)}
 							alt="صفحة {i + 1}"
 							class="h-auto w-full"
 							loading="lazy"
@@ -740,8 +749,8 @@
 					<img
 						bind:this={imageElements[i]}
 						id="page-{i}"
-						src={i < 2 ? `${baseCdnUrl}/${page.image_path}?width=1200&quality=85` : placeholderSrc}
-						data-src="{baseCdnUrl}/{page.image_path}?width=1200&quality=85"
+						src={i < 2 ? getImageUrl(page.image_path, 1200, 85) : placeholderSrc}
+						data-src={getImageUrl(page.image_path, 1200, 85)}
 						alt="صفحة رقم {page.page_number}"
 						class="mx-auto scroll-mt-20 shadow-md"
 						style="margin-bottom: {$verticalPagesGap}px;"
@@ -760,7 +769,7 @@
 					class:fit-height-container={$imageFitMode === 'fit-height'}
 				>
 						<img
-							src="{baseCdnUrl}/{pages[currentPageIndex].image_path}?width=1200&quality=85"
+							src={getImageUrl(pages[currentPageIndex].image_path, 1200, 85)}
 							alt="صفحة رقم {pages[currentPageIndex].page_number}"
 							class="pointer-events-none object-contain shadow-md"
 							class:fit-width-horizontal-single={($pageDisplayMode === 'single' ||
@@ -774,7 +783,7 @@
 						/>
 						{#if $pageDisplayMode === 'double' && pages[currentPageIndex + 1]}
 							<img
-								src="{baseCdnUrl}/{pages[currentPageIndex + 1].image_path}?width=1200&quality=85"
+								src={getImageUrl(pages[currentPageIndex + 1].image_path, 1200, 85)}
 								alt="صفحة رقم {pages[currentPageIndex + 1].page_number}"
 								class="pointer-events-none object-contain shadow-md"
 								class:fit-width-horizontal-double={$imageFitMode !== 'fit-height'}

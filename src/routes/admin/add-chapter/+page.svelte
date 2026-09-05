@@ -58,20 +58,22 @@
 			</div>
 
 			<div>
-				<label for="url" class="mb-2 block text-gray-300">رابط الفصل</label>
-				<input
+				<label for="image_urls" class="mb-2 block text-gray-300">
+					روابط الصفحات من ImgBB (رابط مباشر في كل سطر)
+				</label>
+				<textarea
 					dir="ltr"
-					type="url"
-					name="url"
-					id="url"
-					class="w-full rounded border border-gray-600 bg-gray-700 p-2 text-white"
+					name="image_urls"
+					id="image_urls"
+					rows="8"
+					placeholder="https://i.ibb.co/xxxx/01.webp&#10;https://i.ibb.co/xxxx/02.webp&#10;https://i.ibb.co/xxxx/03.webp"
+					class="w-full rounded border border-gray-600 bg-gray-700 p-3 font-mono text-sm text-white placeholder-gray-500 focus:border-orange-500 focus:outline-none"
 					required
-				/>
+				></textarea>
+				<p class="mt-2 text-xs text-gray-400" dir="rtl">
+					ملاحظة: الصق قائمة الروابط المباشرة (Direct Links) دفعة واحدة. سيتم ترقيم الصفحات تلقائياً (1, 2, 3...) بنفس ترتيب الأسطر.
+				</p>
 			</div>
-			<p class="mt-1 text-xs text-gray-400" dir="rtl">
-				ملاحظة: سيتم إنشاء أسماء الملفات تلقائيًا بالتنسيق التالي:
-				`manga-slug/chapterX/manga-slug-chXX-pX.webp`.
-			</p>
 
 			{#if form?.error}
 				<p class="text-center text-red-500">{form.error}</p>
