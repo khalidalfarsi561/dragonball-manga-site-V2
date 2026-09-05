@@ -74,13 +74,21 @@ export const actions: Actions = {
 			const dom = new JSDOM(sanitizedHtml).window.document;
 			const images = Array.from(dom.querySelectorAll('img')).map((img) => img.src);
 
-			// الآن 'pb' معرف بشكل صحيح
-			await event.locals.pb.collection('chapters').create({
+			// 1. إنشاء سجل الفصل
+			const newChapter = await event.locals.pb.collection('chapters').create({
 				manga: mangaId,
 				title: title,
-				chapter_number: chapter_number,
-				pages: images
+				chapter_number: Number(chapter_number)
 			});
+
+			// 2. إدخال كل صورة كسجل صفحة داخل جدول pages حتى تظهر في القارئ
+			for (let i = 0; i < images.length; i++) {
+				await event.locals.pb.collection('pages').create({
+					chapter: newChapter.id,
+					page_number: i + 1,
+					image_path: images[i]
+				});
+			}
 		} catch (err) {
 			console.log('Error: ', err);
 			return message(form, 'Something went wrong');

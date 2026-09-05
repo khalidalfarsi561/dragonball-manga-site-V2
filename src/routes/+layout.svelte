@@ -149,6 +149,7 @@
 	</main>
 </div>
 
+{#if !$page.params.chapter_number}
 <nav
 	class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 font-[El_Messiri] backdrop-blur md:hidden"
 >
@@ -210,6 +211,7 @@
 		</a>
 	</div>
 </nav>
+{/if}
 
 <style>
 	:global(:root:fullscreen #main-nav) {

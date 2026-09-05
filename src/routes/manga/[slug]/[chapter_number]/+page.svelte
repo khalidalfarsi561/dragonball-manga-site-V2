@@ -754,10 +754,11 @@
 			{:else}
 				{@const step = $pageDisplayMode === 'double' ? 2 : 1}
 				<div class="relative flex w-full flex-grow flex-col items-center justify-center">
-					<div
-						class="flex items-start justify-center gap-2"
-						class:fit-height-container={$imageFitMode === 'fit-height'}
-					>
+				<div
+					class="flex items-start justify-center gap-2"
+					class:flex-row-reverse={$readingDirection === 'rtl'}
+					class:fit-height-container={$imageFitMode === 'fit-height'}
+				>
 						<img
 							src="{baseCdnUrl}/{pages[currentPageIndex].image_path}?width=1200&quality=85"
 							alt="صفحة رقم {pages[currentPageIndex].page_number}"
@@ -800,7 +801,7 @@
 						<div
 							class="h-full flex-1 cursor-pointer"
 							on:click={() =>
-								(currentPageIndex = Math.min(pages.length - step, currentPageIndex + step))}
+								(currentPageIndex = Math.min(pages.length - 1, currentPageIndex + step))}
 							aria-label="الصفحة التالية"
 						/>
 					</div>

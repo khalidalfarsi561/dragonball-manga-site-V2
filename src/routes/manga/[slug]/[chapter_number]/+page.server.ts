@@ -6,6 +6,7 @@ import { grantXp } from '../../../../hooks.server';
 import DOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import { z } from 'zod'; // ✨ إضافة Zod للتحقق المنظم
+import { ClientResponseError } from 'pocketbase';
 import { RateLimiter } from 'sveltekit-rate-limiter/server';
 
 const contentLimiter = new RateLimiter({
@@ -46,13 +47,15 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 					.collection('read_history')
 					.getFirstListItem(`user.id = "${locals.user.id}" && chapter.id = "${chapter.id}"`);
 				lastPageRead = historyRecord.last_page_read || 1;
-			} catch (err: any) {
-				if (err.status === 404) {
-					await pb.collection('read_history').create({
+			} catch (err) {
+				if (err instanceof ClientResponseError && err.status === 404) {
+					await locals.pb.collection('read_history').create({
 						user: locals.user.id,
 						chapter: chapter.id,
 						manga: manga.id,
-						last_page_read: 1
+						last_page_read: 1,
+						completed_reading: false,
+						reading_started_at: new Date().toISOString()
 					});
 				} else {
 					console.error('Error fetching read history:', err);
@@ -100,7 +103,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 				content: c.content,
 				created: c.created,
 				parentComment: c.parentComment || null,
-				likes: Array.isArray(c.expand?.likes) ? c.expand.likes.map((like: any) => like.id) : [],
+				likes: Array.isArray(c.expand?.likes) ? c.expand.likes.map((like: { id: string }) => like.id) : [],
 				user: userObject,
 				replies: []
 			};
@@ -190,6 +193,7 @@ export const actions: Actions = {
 			await grantXp(locals.user.id, 10);
 			return { success: true, newComment };
 		} catch (err) {
+			console.error('Add comment error:', err);
 			return fail(500, { error: 'حدث خطأ ما أثناء إرسال التعليق.' });
 		}
 	},
@@ -283,9 +287,9 @@ export const actions: Actions = {
 			// 3. إذا كان مصرحاً له، قم بالحذف
 			await pb.collection('comments').delete(commentId);
 			return { deleteSuccess: true }; // ✨ تم التعديل هنا
-		} catch (err: any) {
+		} catch (err) {
 			console.error('Delete Comment Error:', err);
-			if (err.status === 404) {
+			if (err instanceof ClientResponseError && err.status === 404) {
 				return fail(404, { error: 'التعليق غير موجود' });
 			}
 			return fail(500, { error: 'حدث خطأ أثناء حذف التعليق.' });
@@ -328,11 +332,11 @@ export const actions: Actions = {
 			}
 
 			// الآن التعديل آمن
-			const updatedComment = await pb
+			await pb
 				.collection('comments')
 				.update(commentId, { content: sanitizedContent });
 			return { editSuccess: true, newContent: sanitizedContent };
-		} catch (err: any) {
+		} catch (err) {
 			console.error('Edit Comment Error:', err);
 			return fail(500, { error: 'حدث خطأ أثناء تعديل التعليق.' });
 		}

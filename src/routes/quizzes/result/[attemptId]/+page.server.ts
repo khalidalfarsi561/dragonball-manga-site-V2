@@ -1,6 +1,6 @@
 // src/routes/quizzes/result/[attemptId]/+page.server.ts
 import { pb } from '$lib/pocketbase';
-import { error, redirect } from '@sveltejs/kit';
+import { error, redirect, isHttpError, isRedirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -33,25 +33,28 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		}));
 
 		console.log('Checkpoint 4: Fetching questions...');
-		const quizId = attempt.expand?.quiz.id;
+		const quizId = attempt.expand?.quiz?.id;
 		if (!quizId) {
-			throw new Error(
-				"Quiz ID is missing from attempt expand. The 'quiz' relation might be broken or missing."
-			);
+			throw new Error("Quiz ID is missing from attempt expand.");
 		}
-		const questions = await pb.collection('questions').getFullList({
-			filter: `quiz = "${quizId}"` // تأكد من تطبيق الإصلاح السابق هنا
+
+		// نجلب الاختبار مع الأسئلة المربوطة به مباشرة
+		const quizData = await locals.pb.collection('quizzes').getOne(quizId, {
+			expand: 'questions'
 		});
+		const questions = quizData.expand?.questions || [];
 
 		console.log('Checkpoint 5: All data fetched successfully.');
-		const correctAnswersMap = new Map(questions.map((q) => [q.id, q.correct_option]));
+		const correctAnswersMap = new Map(
+			questions.map((q: { id: string; correct_option: number }) => [q.id, q.correct_option])
+		);
 
 		return { attempt, userAnswers, correctAnswersMap, questions };
-	} catch (err: any) {
-		console.error('DETAILED ERROR:', JSON.stringify(err, null, 2));
-		if (err.status === 403) {
+	} catch (err) {
+		if (isHttpError(err) || isRedirect(err)) {
 			throw err;
 		}
+		console.error('DETAILED ERROR:', err);
 		throw error(404, 'لم يتم العثور على هذه المحاولة أو حدث خطأ ما.');
 	}
 };

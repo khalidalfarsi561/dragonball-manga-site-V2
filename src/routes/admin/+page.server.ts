@@ -1,15 +1,14 @@
 /* src/routes/admin/+page.server.ts */
-import { pb } from '$lib/pocketbase';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const [mangaRecords, chapterRecords, userRecords, commentRecords, readHistoryRecords] =
 		await Promise.all([
-			pb.collection('mangas').getFullList({ fields: 'id,title' }),
-			pb.collection('chapters').getFullList({ fields: 'id' }),
-			pb.collection('users').getFullList(),
-			pb.collection('comments').getFullList(),
-			pb.collection('read_history').getFullList({ expand: 'manga' })
+			locals.pb.collection('mangas').getFullList({ fields: 'id,title' }),
+			locals.pb.collection('chapters').getFullList({ fields: 'id' }),
+			locals.pb.collection('users').getFullList(),
+			locals.pb.collection('comments').getFullList(),
+			locals.pb.collection('read_history').getFullList({ expand: 'manga' })
 		]);
 
 	const latestUsers = userRecords.slice(0, 5);

@@ -28,6 +28,16 @@
 	let totalPages = $state(data.chaptersResult.totalPages);
 	let isFavorited = $state(data.isFavorited);
 	let isTogglingFavorite = $state(false);
+
+	// أضف هذا المقطع مباشرة أسفل المتغيرات السابقة
+	$effect(() => {
+		chapters = data.chaptersResult.items.map((chapter: Chapter) => ({
+			...chapter,
+			isRead: data.readChapterIds.includes(chapter.id)
+		}));
+		totalPages = data.chaptersResult.totalPages;
+		isFavorited = data.isFavorited;
+	});
 	let chapterListComponent: { loadFinished: () => void } | null = null;
 
 	const toast = $derived.by(() => {
