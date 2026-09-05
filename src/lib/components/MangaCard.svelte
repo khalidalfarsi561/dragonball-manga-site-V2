@@ -24,11 +24,11 @@
 					مستمرة
 				</span>
 			{:else if manga.status === 'مكتملة'}
-				<span class="rounded-full bg-green-600 px-2.5 py-1 text-xs font-bold text-white shadow-md">
+				<span class="scale-75 rounded-full bg-green-500 px-2.5 py-1 text-xs font-bold text-white shadow-md">
 					مكتملة
 				</span>
 			{:else if manga.status === 'متوقفة'}
-				<span class="rounded-full bg-red-500 px-2.5 py-1 text-xs font-bold text-white shadow-md">
+				<span class="scale-75 rounded-full bg-red-500 px-2.5 py-1 text-xs font-bold text-white shadow-md">
 					متوقفة
 				</span>
 			{/if}
