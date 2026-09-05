@@ -152,18 +152,21 @@
 							{#if chapter.isRead}
 								<span class="rounded-full bg-blue-500 px-2 py-0.5 text-xs text-white">مقروء</span>
 							{/if}
+						</div>
+
+						<div class="flex items-center gap-x-2">
 							{#if lastReadChapterId === chapter.id}
 								<span class="rounded-full bg-green-500 px-2 py-0.5 text-xs text-white">
 									آخر قراءة
 								</span>
 							{/if}
-						</div>
 
-						{#if !chapter.isRead}
-							<span class="rounded-full bg-orange-500 px-3 py-1 text-sm font-bold text-white">
-								اقرأ الآن
-							</span>
-						{/if}
+							{#if !chapter.isRead}
+								<span class="rounded-full bg-orange-500 px-3 py-1 text-sm font-bold text-white">
+									اقرأ الآن
+								</span>
+							{/if}
+						</div>
 					</a>
 				</li>
 			{:else}
