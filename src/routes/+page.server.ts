@@ -1,8 +1,7 @@
-import { pb } from '$lib/pocketbase';
 import type { PageServerLoad } from './$types';
 import type { EnrichedManga } from '$lib/types';
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, locals }) => {
 	const searchTerm = url.searchParams.get('q') || '';
 	// ✅ قراءة الفرز من الرابط وتطبيقه فعلياً
 	const sortParam = url.searchParams.get('sort') || '-created';
@@ -32,7 +31,14 @@ export const load: PageServerLoad = async ({ url }) => {
 	// ✅ تطبيق الفرز على النتائج
 	options.sort = sort;
 
-	const records = await pb.collection('mangas').getFullList(options);
+	let records;
+	try {
+		records = await locals.pb.collection('mangas').getFullList(options);
+	} catch (err) {
+		console.warn('فشل جلب المانجا مع الفرز، جاري جلبها بدون فرز...', err);
+		delete options.sort;
+		records = await locals.pb.collection('mangas').getFullList(options);
+	}
 
 	// Process each record to add dynamic properties for the badges
 	const enhancedRecords: EnrichedManga[] = records.map((record) => {
@@ -45,7 +51,7 @@ export const load: PageServerLoad = async ({ url }) => {
 
 		return {
 			...record,
-			cover_image_url: pb.files.getURL(record, record.cover_image),
+			cover_image_url: locals.pb.files.getURL(record, record.cover_image),
 			isNew: isNew,
 			isTrending: isTrending
 		} as EnrichedManga; // Assert that the new object matches the EnrichedManga type

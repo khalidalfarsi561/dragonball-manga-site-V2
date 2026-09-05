@@ -3,7 +3,9 @@ import { DRAGON_BALL_SECRET } from '$env/static/private';
 import PocketBase from 'pocketbase';
 
 export function createPbClient() {
-	return new PocketBase(PUBLIC_POCKETBASE_URL);
+	const pb = new PocketBase(PUBLIC_POCKETBASE_URL);
+	pb.autoCancellation(false);
+	return pb;
 }
 
 export function serializeRecord<T>(record: T): T {
