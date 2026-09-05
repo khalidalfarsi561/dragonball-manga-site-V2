@@ -69,7 +69,7 @@
 	<div class="mb-6 flex flex-col gap-4">
 		<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
 			<h2 class="text-3xl font-bold text-orange-500">
-				قائمة الفصول ({manga.total_chapters || chapters.length})
+				قائمة الفصول ( {manga.total_chapters || chapters.length} )
 			</h2>
 
 			<div class="flex w-full items-center gap-2 md:w-auto">
