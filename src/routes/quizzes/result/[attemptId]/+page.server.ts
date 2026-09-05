@@ -1,5 +1,4 @@
 // src/routes/quizzes/result/[attemptId]/+page.server.ts
-import { pb } from '$lib/pocketbase';
 import { error, redirect, isHttpError, isRedirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -10,7 +9,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	try {
 		console.log('Checkpoint 1: Fetching attempt record...');
-		const attempt = await pb.collection('quiz_attempts').getOne(params.attemptId, {
+		const attempt = await locals.pb.collection('quiz_attempts').getOne(params.attemptId, {
 			expand: 'user,quiz'
 		});
 
@@ -21,7 +20,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		// --- نهاية الإصلاح الأمني ---
 
 		console.log('Checkpoint 2: Fetching user answers...');
-		const userAnswersRecords = await pb.collection('quiz_user_answers').getFullList({
+		const userAnswersRecords = await locals.pb.collection('quiz_user_answers').getFullList({
 			filter: `attempt = "${params.attemptId}"` // تأكد من تطبيق الإصلاح هنا
 		});
 

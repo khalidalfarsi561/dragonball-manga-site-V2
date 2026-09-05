@@ -1,6 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { pb } from '$lib/pocketbase';
 import { signupSchema } from '$lib/schemas';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -25,7 +24,7 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	default: async (event) => {
-		const { request, cookies } = event;
+		const { request, cookies, locals } = event;
 		const form = await superValidate(request, zod(signupSchema));
 
 		if (!form.valid) {
@@ -42,14 +41,17 @@ export const actions: Actions = {
 		// ======================= التعديل ينتهي هنا =======================
 
 		try {
-			await pb.collection('users').create({
+			await locals.pb.collection('users').create({
 				...form.data,
 				name: form.data.username,
 				emailVisibility: true
 			});
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.error('PocketBase Error:', err);
-			const validationErrors = err.data?.data;
+			const validationErrors =
+				typeof err === 'object' && err !== null && 'data' in err
+					? (err as { data?: { data?: Record<string, { code?: string }> } }).data?.data
+					: undefined;
 
 			if (
 				validationErrors?.username?.code === 'validation_not_unique' ||
@@ -65,9 +67,9 @@ export const actions: Actions = {
 
 		// تسجيل الدخول التلقائي بعد إنشاء الحساب
 		try {
-			await pb.collection('users').authWithPassword(form.data.email, form.data.password);
+			await locals.pb.collection('users').authWithPassword(form.data.email, form.data.password);
 			// ✅ إصلاح: exportToCookie يرجع سلسلة Set-Cookie كاملة، نستخرج قيمة "pb_auth" فقط
-			const cookieHeader = pb.authStore.exportToCookie();
+			const cookieHeader = locals.pb.authStore.exportToCookie();
 			const cookieValue = cookieHeader.split(';')[0].split('=').slice(1).join('=');
 			cookies.set('pb_auth', cookieValue, { path: '/' });
 		} catch (err) {

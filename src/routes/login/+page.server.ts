@@ -1,5 +1,4 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { pb } from '$lib/pocketbase';
 import { dev } from '$app/environment';
 import type { Actions } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
@@ -24,7 +23,7 @@ export const load = async () => {
 
 export const actions: Actions = {
 	default: async (event) => {
-		const { request, cookies } = event;
+		const { request, cookies, locals } = event;
 		const form = await superValidate(request, zod(loginSchema));
 
 		if (!form.valid) {
@@ -38,7 +37,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			await pb.collection('users').authWithPassword(form.data.email, form.data.password);
+			await locals.pb.collection('users').authWithPassword(form.data.email, form.data.password);
 
 			const cookieOptions = {
 				path: '/',
@@ -49,7 +48,7 @@ export const actions: Actions = {
 			};
 
 			// ✅ إصلاح: exportToCookie يرجع سلسلة Set-Cookie كاملة، نستخرج قيمة "pb_auth" فقط
-			const cookieHeader = pb.authStore.exportToCookie(cookieOptions);
+			const cookieHeader = locals.pb.authStore.exportToCookie(cookieOptions);
 			const cookieValue = cookieHeader.split(';')[0].split('=').slice(1).join('=');
 			cookies.set('pb_auth', cookieValue, cookieOptions);
 		} catch (err) {
