@@ -64,7 +64,7 @@ export const actions: Actions = {
 				await event.locals.pb.collection('pages').create({
 					chapter: newChapter.id,
 					page_number: i + 1,
-					image_path: urls[i]
+					image_url: urls[i]
 				});
 			}
 		} catch (err) {

@@ -16,10 +16,12 @@ export const load: PageServerLoad = async ({ params }) => {
 
 		// الخطوة 2: بناء رابط الصورة بالطريقة الصحيحة
 		pages.forEach((page) => {
+			// الحقل في PocketBase هو image_url، لكن نستخدم fallback إلى image_path للأمان
+			const imageUrl = page.image_url || page.image_path;
 			// إذا كان الرابط يبدأ بـ http، نستخدمه مباشرة (روابط ImgBB)، وإلا نضيف الـ CDN URL
-			page.imageUrl = page.image_path.startsWith('http')
-				? page.image_path
-				: `${PUBLIC_CDN_URL}/${page.image_path}`;
+			page.imageUrl = imageUrl.startsWith('http')
+				? imageUrl
+				: `${PUBLIC_CDN_URL}/${imageUrl}`;
 		});
 
 		return {

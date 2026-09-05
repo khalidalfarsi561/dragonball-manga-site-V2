@@ -5,13 +5,13 @@ import type { PageServerLoad, Actions } from './$types';
 export const load: PageServerLoad = async () => {
 	// جلب كل الصفحات وأغلفة المانجا
 	const [pages, mangas] = await Promise.all([
-		pb.collection('pages').getFullList({ fields: 'image_path' }),
+		pb.collection('pages').getFullList({ fields: 'image_url' }),
 		pb.collection('mangas').getFullList({ fields: 'cover_image' })
 	]);
 
 	// إنشاء مجموعة بأسماء جميع الملفات المستخدمة
 	const usedFiles = new Set<string>();
-	pages.forEach((p) => usedFiles.add(p.image_path));
+	pages.forEach((p) => usedFiles.add(p.image_url));
 	mangas.forEach((m) => usedFiles.add(m.cover_image));
 
 	// جلب كل السجلات التي تحتوي على ملفات (هذا مثال مبسط)
@@ -24,7 +24,7 @@ export const load: PageServerLoad = async () => {
 
 	const unusedFiles: { name: string; url: string; recordId: string }[] = [];
 	allFileRecords.forEach((record) => {
-		const fileFields = ['image_path', 'cover_image'];
+		const fileFields = ['image_url', 'cover_image'];
 		for (const field of fileFields) {
 			const fileName = record[field];
 			if (fileName && !usedFiles.has(fileName)) {
