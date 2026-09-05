@@ -58,6 +58,13 @@ function createQuizStore() {
 				};
 			});
 		},
+		// ✅ إنهاء الاختبار يدوياً (يُستخدم عند انتهاء الوقت قبل إتمام الأسئلة)
+		completeQuiz: () => {
+			update((state) => ({
+				...state,
+				isCompleted: true
+			}));
+		},
 		reset: () =>
 			set({
 				questions: [],

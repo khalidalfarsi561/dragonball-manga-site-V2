@@ -113,6 +113,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 			nextChapterExists,
 			comments,
 			commentsTotalPages: commentsResult.totalPages,
+			commentsTotal: commentsResult.totalItems, // ✅ الإجمالي الكلي للتعليقات
 			lastPageRead
 		};
 	} catch (err) {

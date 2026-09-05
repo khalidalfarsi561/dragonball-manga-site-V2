@@ -35,44 +35,39 @@ export const GET: RequestHandler = async ({ params, url }) => {
 
 		// --- ✨ بداية الإضافة السحرية (جلب الردود) ✨ ---
 
-		// الخطوة 2: تجميع IDs التعليقات الرئيسية
-		const parentCommentIds = commentsResult.items.map((c) => c.id);
-
+		// الخطوة 2: جلب *كل* الردود في الفصل (بأي عمق) حتى تظهر الردود على الردود أيضاً
 		let allReplies: any[] = [];
 
-		// الخطوة 3: جلب *كل* الردود لهذه التعليقات في طلب واحد
-		if (parentCommentIds.length > 0) {
-			const repliesFilter = parentCommentIds.map((id) => `parentComment = "${id}"`).join(' || ');
+		allReplies = await pb.collection('comments').getFullList({
+			filter: `chapter = "${chapterId}" && parentComment != null`,
+			sort: 'created', // الردود نرتبها من الأقدم للأحدث
+			expand: 'user,likes'
+		});
 
-			allReplies = await pb.collection('comments').getFullList({
-				filter: repliesFilter,
-				sort: 'created', // الردود نرتبها من الأقدم للأحدث
-				expand: 'user,likes' // لا ننسى بيانات المستخدمين للردود
-			});
-		}
-
-		// الخطوة 4: (سر الكفاءة) تحويل مصفوفة الردود إلى "خريطة" لسهولة الوصول
+		// الخطوة 3: تحويل الردود إلى "خريطة" حسب الأب لتسهيل الوصول
 		const repliesMap = new Map<string, any[]>();
 
 		for (const reply of allReplies) {
 			const parentId = reply.parentComment;
+			if (!parentId) continue;
 			if (!repliesMap.has(parentId)) {
 				repliesMap.set(parentId, []);
 			}
-			// نستخدم الدالة المساعدة لتنسيق الردود أيضاً
 			repliesMap.get(parentId)!.push(formatComment(reply));
 		}
 
-		// --- ✨ نهاية الإضافة السحرية ✨ ---
+		// الخطوة 4: دالة لبناء شجرة الردود متعددة المستويات (رد على رد)
+		const attachReplies = (list: any[]): any[] => {
+			for (const item of list) {
+				item.replies = attachReplies(repliesMap.get(item.id) || []);
+			}
+			return list;
+		};
 
-		// الخطوة 5: بناء المصفوفة النهائية باستخدام الدالة المساعدة وربط الردود
+		// الخطوة 5: بناء المصفوفة النهائية مع ربط الردود المتداخلة
 		const comments = commentsResult.items.map((c) => {
-			// نستخدم الدالة المساعدة
 			const formattedComment = formatComment(c);
-
-			// هنا نضع الردود من الخريطة
-			formattedComment.replies = repliesMap.get(c.id) || []; // <--- ✨ تم الإصلاح!
-
+			formattedComment.replies = attachReplies(repliesMap.get(c.id) || []);
 			return formattedComment;
 		});
 

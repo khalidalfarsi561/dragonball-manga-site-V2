@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { fail, redirect } from '@sveltejs/kit';
 import { pb } from '$lib/pocketbase';
 import { dev } from '$app/environment';
@@ -49,8 +48,11 @@ export const actions: Actions = {
 				maxAge: 60 * 60 * 24 * 30
 			};
 
-			cookies.set('pb_auth', pb.authStore.exportToCookie(cookieOptions), cookieOptions);
-		} catch (err: any) {
+			// ✅ إصلاح: exportToCookie يرجع سلسلة Set-Cookie كاملة، نستخرج قيمة "pb_auth" فقط
+			const cookieHeader = pb.authStore.exportToCookie(cookieOptions);
+			const cookieValue = cookieHeader.split(';')[0].split('=').slice(1).join('=');
+			cookies.set('pb_auth', cookieValue, cookieOptions);
+		} catch (err) {
 			console.error('Login Error:', err);
 			return message(form, 'البريد الإلكتروني أو كلمة المرور غير صحيحة.', {
 				status: 401

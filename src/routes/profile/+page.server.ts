@@ -1,6 +1,7 @@
 // src/routes/profile/+page.server.ts
 import { pb } from '$lib/pocketbase';
 import { redirect, fail } from '@sveltejs/kit';
+import { grantXp } from '../../hooks.server'; // ✅ لإضافة النقاط عبر منطق المستويات
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -169,7 +170,8 @@ export const actions: Actions = {
 		}
 
 		// اختيار 3 أمنيات عشوائية من القائمة
-		const shuffled = allWishes.sort(() => 0.5 - Math.random());
+		// ✅ نسخة من المصفوفة حتى لا نغيّر الترتيب الأصلي بشكل دائم
+		const shuffled = [...allWishes].sort(() => 0.5 - Math.random());
 		const selectedWishes = shuffled.slice(0, 3);
 
 		return { wishes: selectedWishes };
@@ -192,9 +194,27 @@ export const actions: Actions = {
 			.collection('user_dragonballs')
 			.getFirstListItem(`user.id = "${locals.user.id}"`);
 
+		// ✅ حماية إضافية: لا يمكن تحقيق الأمنية إلا بجمع الكرات السبع أولاً
+		// (لا نعتمد على واجهة summonShenron فقط)
+		if ((userBallsRecord.collected_balls || []).length < 7) {
+			return fail(400, { error: 'يجب جمع الكرات السبع أولاً.' });
+		}
+
 		// تطبيق تأثير الأمنية
 		if (selectedWish.action.type === 'update_user') {
-			await pb.collection('users').update(locals.user.id, selectedWish.action.payload);
+			const payload = { ...selectedWish.action.payload };
+
+			// ✅ أمنية "دفعة الخبرة" تُمرّر عبر grantXp لتحديث المستوى بشكل صحيح
+			if ('xp+' in payload) {
+				const xpAmount = Number(payload['xp+']) || 0;
+				delete payload['xp+'];
+				if (Object.keys(payload).length > 0) {
+					await pb.collection('users').update(locals.user.id, payload);
+				}
+				await grantXp(locals.user.id, xpAmount);
+			} else {
+				await pb.collection('users').update(locals.user.id, payload);
+			}
 		}
 
 		// إعادة تعيين كرات التنين

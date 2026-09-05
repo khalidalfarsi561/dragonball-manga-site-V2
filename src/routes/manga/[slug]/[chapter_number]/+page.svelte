@@ -205,6 +205,9 @@
 		// الخطوة 1: انتظر حتى يتم رسم كل شيء على الشاشة
 		await tick();
 
+		// ✅ تتبّع حالة ملء الشاشة لتحديث الأيقونة
+		document.addEventListener('fullscreenchange', handleFullscreenChange);
+
 		// الخطوة 2: قم بالتمرير إلى الصفحة الصحيحة فوراً
 		if ($readingMode === 'vertical') {
 			const pageElement = document.getElementById(`page-${currentPageIndex}`);
@@ -261,6 +264,7 @@
 		if (observer) observer.disconnect();
 		clearTimeout(inactivityTimer);
 		clearTimeout(updateTimeout);
+		document.removeEventListener('fullscreenchange', handleFullscreenChange);
 	});
 
 	$: {
@@ -280,14 +284,18 @@
 		'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 	let isFullscreen = false;
+
+	// ✅ تحديث حالة ملء الشاشة عند تغييرها (زر F أو Esc) لتظهر الأيقونة الصحيحة
+	function handleFullscreenChange() {
+		isFullscreen = !!document.fullscreenElement;
+	}
+
 	function toggleFullscreen() {
 		if (browser) {
 			if (!document.fullscreenElement) {
-				document.documentElement.requestFullscreen();
-			} else {
-				if (document.exitFullscreen) {
-					document.exitFullscreen();
-				}
+				document.documentElement.requestFullscreen?.();
+			} else if (document.exitFullscreen) {
+				document.exitFullscreen();
 			}
 		}
 	}

@@ -8,28 +8,35 @@ export async function grantXp(
 	amount: number,
 	client: PocketBase = createPbClient()
 ) {
-	if (!userId || amount <= 0) return;
+	// نسمح بالقيم الموجبة والسالبة (الخصم)، لكن لا نتعامل مع الصفر.
+	if (!userId || amount === 0) return;
 
 	try {
 		const user = await client.collection('users').getOne(userId);
-		const newXp = (user.xp || 0) + amount;
+		let newXp = (user.xp || 0) + amount;
 		let newLevel = user.power_level || 1;
 		let xpToNext = user.xp_to_next_level || 100;
 
-		if (newXp >= xpToNext) {
-			newLevel += 1;
-			const remainingXp = newXp - xpToNext;
+		// ✅ معالجة الخصم: نزول المستوى إذا لزم، مع منع النقاط من النزول تحت الصفر
+		while (newLevel > 1 && newXp < 0) {
+			newLevel -= 1;
 			xpToNext = newLevel * 100;
+			newXp += xpToNext;
+		}
+		if (newXp < 0) newXp = 0;
 
-			await client.collection('users').update(userId, {
-				xp: remainingXp,
-				power_level: newLevel,
-				xp_to_next_level: xpToNext
-			});
-			return;
+		// ✅ معالجة الإضافة: صعود المستوى حتى تستقر النقاط داخل الحد
+		while (newLevel < 1000 && newXp >= xpToNext) {
+			newXp -= xpToNext;
+			newLevel += 1;
+			xpToNext = newLevel * 100;
 		}
 
-		await client.collection('users').update(userId, { xp: newXp });
+		await client.collection('users').update(userId, {
+			xp: Math.round(newXp),
+			power_level: newLevel,
+			xp_to_next_level: xpToNext
+		});
 	} catch (err) {
 		console.error('Error granting XP:', err);
 	}

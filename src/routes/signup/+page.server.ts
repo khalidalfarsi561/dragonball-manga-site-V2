@@ -66,7 +66,10 @@ export const actions: Actions = {
 		// تسجيل الدخول التلقائي بعد إنشاء الحساب
 		try {
 			await pb.collection('users').authWithPassword(form.data.email, form.data.password);
-			cookies.set('pb_auth', pb.authStore.exportToCookie(), { path: '/' });
+			// ✅ إصلاح: exportToCookie يرجع سلسلة Set-Cookie كاملة، نستخرج قيمة "pb_auth" فقط
+			const cookieHeader = pb.authStore.exportToCookie();
+			const cookieValue = cookieHeader.split(';')[0].split('=').slice(1).join('=');
+			cookies.set('pb_auth', cookieValue, { path: '/' });
 		} catch (err) {
 			console.error('Auto-login Error:', err);
 			// إذا فشل تسجيل الدخول التلقائي، نوجه المستخدم لصفحة تسجيل الدخول

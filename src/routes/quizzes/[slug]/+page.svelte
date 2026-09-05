@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy, tick } from 'svelte';
 	import { quizStore } from '$lib/stores/quiz';
 	import type { PageData, ActionData } from './$types';
 	import type { Question } from '$lib/stores/quiz';
@@ -26,7 +26,7 @@
 		startTime = Date.now();
 
 		if (timeLeft !== null) {
-			timerInterval = setInterval(() => {
+			timerInterval = setInterval(async () => {
 				const elapsed = Math.floor((Date.now() - startTime) / 1000);
 				const remaining = data.quiz.time_limit - elapsed;
 				if (remaining >= 0) {
@@ -34,6 +34,11 @@
 				} else {
 					timeLeft = 0;
 					clearInterval(timerInterval);
+					// ✅ إذا لم يُكمل المستخدم الأسئلة، نجبر إنهاء الاختبار حتى يظهر نموذج الإرسال
+					if (!$quizStore.isCompleted) {
+						quizStore.completeQuiz();
+						await tick();
+					}
 					const submitForm = document.getElementById('submitQuizForm') as HTMLFormElement;
 					if (submitForm) submitForm.requestSubmit();
 				}

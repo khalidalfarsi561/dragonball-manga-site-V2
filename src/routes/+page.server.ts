@@ -4,7 +4,10 @@ import type { EnrichedManga } from '$lib/types';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const searchTerm = url.searchParams.get('q') || '';
-	const sort = '';
+	// ✅ قراءة الفرز من الرابط وتطبيقه فعلياً
+	const sortParam = url.searchParams.get('sort') || '-created';
+	// نحن نسمح بالقيم الصالحة فقط: "-created" (الأحدث) أو "title" (أبجدي)
+	const sort = sortParam === 'title' ? 'title' : sortParam === 'created' ? 'created' : '-created';
 	const status = url.searchParams.get('status') || '';
 
 	let filter = '';
@@ -19,11 +22,15 @@ export const load: PageServerLoad = async ({ url }) => {
 
 	const options: {
 		filter?: string;
+		sort?: string;
 	} = {};
 
 	if (filter) {
 		options.filter = filter;
 	}
+
+	// ✅ تطبيق الفرز على النتائج
+	options.sort = sort;
 
 	const records = await pb.collection('mangas').getFullList(options);
 
