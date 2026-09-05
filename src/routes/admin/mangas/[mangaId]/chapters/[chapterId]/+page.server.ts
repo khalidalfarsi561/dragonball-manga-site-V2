@@ -19,9 +19,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			// الحقل في PocketBase هو image_url، لكن نستخدم fallback إلى image_path للأمان
 			const imageUrl = page.image_url || page.image_path;
 			// إذا كان الرابط يبدأ بـ http، نستخدمه مباشرة (روابط ImgBB)، وإلا نضيف الـ CDN URL
-			page.imageUrl = imageUrl.startsWith('http')
-				? imageUrl
-				: `${PUBLIC_CDN_URL}/${imageUrl}`;
+			page.imageUrl = imageUrl.startsWith('http') ? imageUrl : `${PUBLIC_CDN_URL}/${imageUrl}`;
 		});
 
 		return {

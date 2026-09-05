@@ -142,7 +142,11 @@
 	<div class="rounded-lg bg-gray-800 shadow-lg">
 		<ul class="divide-y divide-gray-700">
 			{#each filteredChapters as chapter (chapter.id)}
-				<li class={lastReadChapterId === chapter.id ? 'relative z-10 mx-[0px] my-[-3px] rounded-[8px] border-[2px] border-orange-500 bg-orange-950/30 shadow-[0_0_18px_rgba(249,115,22,0.55)] overflow-hidden' : ''}>
+				<li
+					class={lastReadChapterId === chapter.id
+						? 'relative z-10 mx-[0px] my-[-3px] overflow-hidden rounded-[8px] border-[2px] border-orange-500 bg-orange-950/30 shadow-[0_0_18px_rgba(249,115,22,0.55)]'
+						: ''}
+				>
 					<a
 						href={`/manga/${manga.slug}/${chapter.chapter_number}`}
 						class="flex items-center justify-between p-4 transition-colors duration-200 hover:bg-gray-700/50"

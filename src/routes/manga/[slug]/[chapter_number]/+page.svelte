@@ -763,13 +763,17 @@
 			{:else}
 				{@const step = $pageDisplayMode === 'double' ? 2 : 1}
 				<div class="relative flex w-full flex-grow flex-col items-center justify-center">
-				<div
-					class="flex items-start justify-center gap-2"
-					class:flex-row-reverse={$readingDirection === 'rtl'}
-					class:fit-height-container={$imageFitMode === 'fit-height'}
-				>
+					<div
+						class="flex items-start justify-center gap-2"
+						class:flex-row-reverse={$readingDirection === 'rtl'}
+						class:fit-height-container={$imageFitMode === 'fit-height'}
+					>
 						<img
-							src={getImageUrl(pages[currentPageIndex].image_url || pages[currentPageIndex].image_path, 1200, 85)}
+							src={getImageUrl(
+								pages[currentPageIndex].image_url || pages[currentPageIndex].image_path,
+								1200,
+								85
+							)}
 							alt="صفحة رقم {pages[currentPageIndex].page_number}"
 							class="pointer-events-none object-contain shadow-md"
 							class:fit-width-horizontal-single={($pageDisplayMode === 'single' ||
@@ -783,7 +787,11 @@
 						/>
 						{#if $pageDisplayMode === 'double' && pages[currentPageIndex + 1]}
 							<img
-								src={getImageUrl(pages[currentPageIndex + 1].image_url || pages[currentPageIndex + 1].image_path, 1200, 85)}
+								src={getImageUrl(
+									pages[currentPageIndex + 1].image_url || pages[currentPageIndex + 1].image_path,
+									1200,
+									85
+								)}
 								alt="صفحة رقم {pages[currentPageIndex + 1].page_number}"
 								class="pointer-events-none object-contain shadow-md"
 								class:fit-width-horizontal-double={$imageFitMode !== 'fit-height'}

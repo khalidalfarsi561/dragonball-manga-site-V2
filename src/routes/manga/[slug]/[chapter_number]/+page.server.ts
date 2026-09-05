@@ -103,7 +103,9 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 				content: c.content,
 				created: c.created,
 				parentComment: c.parentComment || null,
-				likes: Array.isArray(c.expand?.likes) ? c.expand.likes.map((like: { id: string }) => like.id) : [],
+				likes: Array.isArray(c.expand?.likes)
+					? c.expand.likes.map((like: { id: string }) => like.id)
+					: [],
 				user: userObject,
 				replies: []
 			};
@@ -332,9 +334,7 @@ export const actions: Actions = {
 			}
 
 			// الآن التعديل آمن
-			await pb
-				.collection('comments')
-				.update(commentId, { content: sanitizedContent });
+			await pb.collection('comments').update(commentId, { content: sanitizedContent });
 			return { editSuccess: true, newContent: sanitizedContent };
 		} catch (err) {
 			console.error('Edit Comment Error:', err);

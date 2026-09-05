@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		console.log('Checkpoint 4: Fetching questions...');
 		const quizId = attempt.expand?.quiz?.id;
 		if (!quizId) {
-			throw new Error("Quiz ID is missing from attempt expand.");
+			throw new Error('Quiz ID is missing from attempt expand.');
 		}
 
 		// نجلب الاختبار مع الأسئلة المربوطة به مباشرة

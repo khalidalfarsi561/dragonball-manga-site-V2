@@ -150,67 +150,59 @@
 </div>
 
 {#if !$page.params.chapter_number}
-<nav
-	class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 font-[El_Messiri] backdrop-blur md:hidden"
->
-	<div class="flex h-16 items-center justify-around">
-		<a href="/" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
-			<img
-				src="https://i.ibb.co/1G85wXr8/home.webp"
-				alt="الرئيسية"
-				class="h-6 w-6"
-			/>
-			<span class="mt-1 text-xs">الرئيسية</span>
-		</a>
+	<nav
+		class="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-800 bg-gray-950/95 font-[El_Messiri] backdrop-blur md:hidden"
+	>
+		<div class="flex h-16 items-center justify-around">
+			<a href="/" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+				<img src="https://i.ibb.co/1G85wXr8/home.webp" alt="الرئيسية" class="h-6 w-6" />
+				<span class="mt-1 text-xs">الرئيسية</span>
+			</a>
 
-		<a href="/quizzes" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
-			<img
-				src="https://i.ibb.co/N6WHVMvF/quiz.webp"
-				alt="الاختبارات"
-				class="h-6 w-6"
-			/>
-			<span class="mt-1 text-xs">اختبارات</span>
-		</a>
+			<a href="/quizzes" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+				<img src="https://i.ibb.co/N6WHVMvF/quiz.webp" alt="الاختبارات" class="h-6 w-6" />
+				<span class="mt-1 text-xs">اختبارات</span>
+			</a>
 
-		<a href="/leaderboard" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-6 w-6"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-				<path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-				<path d="M4 22h16" />
-				<path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
-				<path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
-				<path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-			</svg>
-			<span class="mt-1 text-xs">الترتيب</span>
-		</a>
+			<a href="/leaderboard" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+					<path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+					<path d="M4 22h16" />
+					<path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+					<path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+					<path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+				</svg>
+				<span class="mt-1 text-xs">الترتيب</span>
+			</a>
 
-		<a href="/profile" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-6 w-6"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-				<circle cx="12" cy="7" r="4" />
-			</svg>
-			<span class="text-xs">حسابي</span>
-		</a>
-	</div>
-</nav>
+			<a href="/profile" class="flex flex-col items-center text-gray-300 hover:text-orange-400">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+					<circle cx="12" cy="7" r="4" />
+				</svg>
+				<span class="text-xs">حسابي</span>
+			</a>
+		</div>
+	</nav>
 {/if}
 
 <style>

@@ -151,7 +151,9 @@
 		>
 			<h2 class="mb-6 text-center text-3xl font-bold text-orange-400">مراجعة إجاباتك</h2>
 			{#each data.userAnswers as userAnswer (userAnswer.questionId)}
-				{@const question = data.questions.find((q: { id: string }) => q.id === userAnswer.questionId)}
+				{@const question = data.questions.find(
+					(q: { id: string }) => q.id === userAnswer.questionId
+				)}
 
 				{console.log(`- Searching for questionId: "${userAnswer.questionId}" ... Found:`, question)}
 
